@@ -1,0 +1,177 @@
+*, *:before, *:after {
+	box-sizing: border-box;
+}
+
+body {
+	background-color: rgb(0, 0, 0); /* white, #FFFFFF */
+	padding: 2em;
+	margin: 20;
+	color: rgb(255, 255, 255);
+	font-family: "Inter", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
+	font-variation-settings: "slnt" 0;
+}
+
+a {
+	color: red;
+	text-decoration: none;
+	transition: all 1s;
+}
+a:visited {
+	color: brown;
+}
+a:hover{
+	text-decoration: underline;
+	/* color: gold;
+	margin-left: 1em; */
+}
+
+
+p {
+	margin: 0 0 1em 0;
+	max-width: 30em;
+}
+
+h1 {
+	margin: 0;
+	font-size: 3em;
+}
+
+h4 {
+	margin: 0;
+	margin-bottom: 1em;
+}
+
+iframe {
+	margin: 0;
+	display: block;
+	border: none;
+	width: 100%;
+}
+
+header,
+section {
+	margin-bottom: 2em;
+	padding-top: 0.25em;
+}
+
+
+.filetto {
+	border-top: solid 1px rgb(255, 255, 255);
+}
+.bibliografia-container {
+	border-top: solid 1px rgb(255, 255, 255);
+}
+.footer {
+	border-top: solid 1px rgb(255, 255, 255);
+}
+.titolo-sezione {
+	margin-right: 1em;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+/* -- breakpoint: schermi piccoli, larghezza massima 500 pixel -- */
+
+@media only screen and (max-width: 600px) {
+	.contenitore {
+		width:100%;
+	}
+	.contenuto-sezione {
+		width: 100%;
+	}
+	.titolo-sezione {
+		width: 100%;
+	}
+	img {
+		width: 100%;
+	}
+}
+
+.bibliografia-container {
+    padding-top: 30px;
+    
+ 
+}
+
+details summary {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #ffffff;
+    padding: 10px;
+    cursor: pointer; 
+    outline: none;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.bibliografia-contenuto {
+    padding: 15px;
+}
+
+.bibliografia-contenuto p {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.bibliografia-contenuto ul {
+    list-style-type: disc; /* Stile dei pallini dell'elenco */
+    padding-left: 0px; /* Spazio a sinistra per i pallini */
+    margin-bottom: 0;
+}
+
+.bibliografia-contenuto li {
+    margin-bottom: 10px; /* Spazio tra gli elementi dell'elenco */
+}
+
+.bibliografia-contenuto a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.bibliografia-contenuto a:hover {
+    text-decoration: underline;
+}
+
+footer {
+   
+    border-top: 1px solid #FFFFFF;
+    margin-top: 20px; 
+    padding-top: 20px; 
+}
+
+footer {
+   
+    color: #ffffff;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid #FFFFFF;
+   
+}
+footer {
+    display: flex;                 /* 1. Rende il footer un contenitore Flexbox */
+    justify-content: space-between;/* 2. Spinge il primo figlio a sinistra e il secondo a destra,
+                                          distribuendo lo spazio tra di loro. */
+    align-items: center;          
+    color: #ffffff;
+    
+    border-top: 1px solid #cccccc;
+    min-height: 50px;              /* Altezza minima per dare spazio alla centratura verticale */
+}
+
+/* Stili per i paragrafi all'interno dei blocchi, per evitare margini indesiderati */
+.footer-contenuto-sinistra p,
+.footer-contenuto-destra p {
+    margin: 0; /* Rimuove i margini di default dei paragrafi */
+}
+
+/* Opzionale: se vuoi che il testo all'interno del blocco di destra sia esplicitamente allineato a destra
+   (utile se il blocco di destra contiene più righe) */
+.footer-contenuto-destra {
+    text-align: right;
+}
