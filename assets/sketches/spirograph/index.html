@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulazione DCT - Qualità Migliorata</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            background-color: #f7f7f7;
+            font-family: 'Inter', sans-serif;
+            padding: 20px 0;
+            color: #333;
+        }
+        #canvas-container {
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: default;
+        }
+        #controls {
+            padding: 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            width: 300px; /* Larghezza fissa per i controlli, più stretta */
+            margin-bottom: 20px;
+        }
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+        }
+        label {
+            font-size: 0.85em;
+            color: #444;
+            text-align: center;
+        }
+        input[type="range"] {
+            width: 90%;
+            max-width: 280px;
+            accent-color: #007AFF;
+        }
+        h1 {
+            color: #222;
+            margin-bottom: 25px;
+            font-weight: 500;
+            font-size: 1.8em;
+        }
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1000px; /* Aumentato per il layout a 3 colonne */
+        }
+        .hover-info {
+            position: absolute;
+            background-color: rgba(0,0,0,0.75);
+            color: white;
+            padding: 4px 7px;
+            border-radius: 3px;
+            font-size: 0.75em;
+            pointer-events: none;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <h1>Simulazione DCT Interattiva</h1>
+
+        <div id="controls">
+            <div class="control-group">
+                <label for="quantizationSlider">Quantizzazione: <span id="quantizationValue">7</span></label>
+                <input type="range" id="quantizationSlider" min="0" max="14" value="7">
+            </div>
+        </div>
+
+        <div id="canvas-container">
+            {/* Il canvas p5.js verrà inserito qui da sketch.js */}
+        </div>
+        <div id="hoverInfoDiv" class="hover-info">Indici (u,v): -,-</div>
+
+    </div>
+
+    {/* Includi p5.js prima del tuo sketch.js */}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
+    <script src="sketch.js"></script>
+</body>
+</html>
