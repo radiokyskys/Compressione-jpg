@@ -1,0 +1,2 @@
+# Compressione-jpg
+Compressione JPEG
