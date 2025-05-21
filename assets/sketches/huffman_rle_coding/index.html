@@ -6,20 +6,36 @@
     <title>Huffman + RLE Coding Sketch</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
     <style>
-        body {
+        html, body {
             margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Prevent scrollbars */
+            background-color: rgb(240, 240, 240);
             display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #ffffff;
+            flex-direction: column;
+        }
+        #controls-container {
+            padding: 10px;
+            /* background-color: #eee; */ /* Optional: for visibility */
+        }
+        #canvas-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: stretch;
+            justify-content: stretch;
         }
         #canvas-container canvas {
             display: block;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
 <body>
+    <div id="controls-container">
+        <!-- p5.js DOM elements will be parented here -->
+    </div>
     <div id="canvas-container">
         <!-- The p5.js canvas will be created here by sketch.js -->
     </div>
