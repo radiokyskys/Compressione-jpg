@@ -1,0 +1,210 @@
+html {
+	font-size: clamp(0.9rem, 1vw + 0.5rem, 1.2rem); /* Adjust values as needed */
+}
+
+*, *:before, *:after {
+	box-sizing: border-box;
+}
+
+body {
+	background-color: rgb(255, 255, 255); /* white, #FFFFFF */
+	padding: 2em;
+	margin: 2em clamp(2em, 5vw + 1em, 6em);
+	color: rgb(0, 0, 0);
+	font-family: "Helvetica", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
+	font-variation-settings: "slnt" 0;
+}
+
+a {
+	color: red;
+	text-decoration: none;
+	transition: all 1s;
+}
+a:visited {
+	color: brown;
+}
+a:hover{
+	text-decoration: underline;
+	/* color: gold;
+	margin-left: 1em; */
+}
+
+
+p {
+	margin: 0 0 1em 0;
+	max-width: 45em;
+}
+
+.contenuto-sezione p {
+	font-size: 1.125em;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+h1 {
+	margin: 0;
+	font-size: 3em; 
+}
+
+h2 {
+	margin: 0;
+	font-size: 1em;
+}
+
+h4 {
+	margin: 0;
+	font-size: 1.5em;
+	margin-bottom: 1em;
+}
+
+iframe {
+	margin: 0;
+	display: block;
+	border: none;
+	width: 100%;
+}
+
+.sketch-image {
+	width: 100%;
+	height: 500px;
+	object-fit: contain; /* Or 'cover', depending on desired behavior */
+}
+
+header,
+section {
+	margin-bottom: 2em;
+	padding-top: 0.25em;
+}
+
+
+.filetto {
+	border-top: solid 2px rgb(0, 0, 0);
+}
+.bibliografia-container {
+	border-top: solid 2px rgb(0, 0, 0);
+}
+.footer {
+	border-top: solid 2px rgb(0, 0, 0);
+}
+.titolo-sezione {
+	max-width: 34em;
+	margin-left: auto;
+	margin-right: auto;
+	/* text-align: left by default */
+	/* margin-right: 1em; is now overridden by auto */
+}
+
+.contenuto-sezione {
+	margin-left: 0;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+
+
+@media only screen and (max-width: 600px) {
+	body {
+		margin: 1em;
+	}
+	.contenitore {
+		width:100%;
+	}
+	.contenuto-sezione {
+		width: 100%;
+	}
+	.titolo-sezione {
+		width: 100%;
+	}
+	img {
+		width: 100%;
+	}
+}
+
+.bibliografia-container {
+    padding-top: 30px;
+    
+ 
+}
+
+details summary {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #000000;
+    padding: 10px;
+    cursor: pointer; 
+    outline: none;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.bibliografia-contenuto {
+    padding: 15px;
+}
+
+.bibliografia-contenuto p {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.bibliografia-contenuto ul {
+    list-style-type: disc; /* Stile dei pallini dell'elenco */
+    padding-left: 0px; /* Spazio a sinistra per i pallini */
+    margin-bottom: 0;
+}
+
+.bibliografia-contenuto li {
+    margin-bottom: 10px; /* Spazio tra gli elementi dell'elenco */
+}
+
+.bibliografia-contenuto a {
+    color: #000000;
+    text-decoration: none;
+}
+
+.bibliografia-contenuto a:hover {
+    text-decoration: underline;
+}
+
+footer {
+   
+    border-top: 1px solid #000000;
+    margin-top: 20px; 
+    padding-top: 20px; 
+}
+
+footer {
+   
+    color: #000000;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid #000000;
+   
+}
+footer {
+    display: flex;                 /* 1. Rende il footer un contenitore Flexbox */
+    justify-content: space-between;/* 2. Spinge il primo figlio a sinistra e il secondo a destra,
+                                          distribuendo lo spazio tra di loro. */
+    align-items: center;          
+    color: #000000;
+    
+    border-top: 2px solid #000000;
+    min-height: 50px;              /* Altezza minima per dare spazio alla centratura verticale */
+}
+
+/* Stili per i paragrafi all'interno dei blocchi, per evitare margini indesiderati */
+.footer-contenuto-sinistra p,
+.footer-contenuto-destra p {
+    margin: 0; /* Rimuove i margini di default dei paragrafi */
+}
+
+/* Opzionale: se vuoi che il testo all'interno del blocco di destra sia esplicitamente allineato a destra
+   (utile se il blocco di destra contiene più righe) */
+.footer-contenuto-destra {
+    text-align: right;
+}
