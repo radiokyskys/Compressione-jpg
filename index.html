@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
 	<meta charset="utf-8">
 	<title>Compressione JPEG</title>
@@ -12,6 +12,54 @@
 	<link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 
 	<link rel="stylesheet"   href="./assets/css/main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sketch Lettura Zig-Zag (RLE)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
+    <style>
+        /* Stile per il font personalizzato */
+        @font-face {
+            font-family: 'MyPixelFont'; 
+            /* Assicurati che il file ChicagoFLF.ttf sia nella stessa cartella di index.html,
+               o aggiorna il percorso se si trova altrove. */
+            src: url('ChicagoFLF.ttf') format('truetype'); 
+        }
+        body { 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; /* Added to stack children vertically */
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            background-color: #ffffff; /* Sfondo bianco */
+            font-family: 'Helvetica', monospace; /* Applica Helvetica come font principale */
+            color: #000000; /* Colore testo nero */
+        }
+        #sketch-container canvas {
+            border: 1px solid #555;
+        }
+        .sketch-controls {
+            text-align: center; /* Centra i bottoni */
+            margin-bottom: 5px; /* Ridotto spazio sotto i bottoni */
+        }
+        .sketch-controls button {
+            padding: 10px 30px; /* Ulteriormente aumentato padding per bottoni più grandi */
+            font-size: 20px;    /* Ulteriormente aumentata dimensione del testo del bottone */
+            margin: 0 5px;      /* Aggiunge un po' di spazio tra i bottoni */
+            color: red;         /* Colore testo rosso */
+            font-family: 'Futura', sans-serif; /* Font Futura */
+        }
+        #rle-huffman {
+            margin-bottom: 10px; /* Riduce lo spazio sotto la sezione degli sketch RLE/Huffman */
+        }
+        main.contenitore header > h1,
+        main.contenitore section.filetto > h4.titolo-sezione {
+            text-align: left; /* Assicura allineamento a sinistra per titolo e sottotitoli */
+        }
+        #sketch-huffman-rle-container {
+            margin-bottom: 20px; /* Adds space below the iframe container */
+        }
+    </style>
 </head>
 <body>
 	<main class="contenitore">
@@ -80,7 +128,7 @@
 					nel secondo caso viene fatta una media di valori divisi orizzontalmente ( 12 valori RGB, 8 valori YCbCr) infine 
 					l'ultima dei sotto campionamenti è quella più brutale in cui viene fatta una media dei quattro valori di Cb e Cr (12 valori RGB, 6 valori YCbCr). 
 				</p>
-				<img class="sketch-image" src="./assets/images/Sottocampionatura Della Crominanza.png" alt="Sottocampionatura Della Crominanza" />
+				<img class="sketch-image" src="./assets/images/Sottocampionatura Della Crominanza 1.png" alt="Sottocampionatura Della Crominanza 1" />
 			</div>
 		</section>
 
@@ -102,8 +150,7 @@
 					sfruttando così la debolezza dell'occhio umano.
 
 				</p>
-				<iframe scrolling=no frameborder=0 height=500 src="./assets/sketches/spirograph/"></iframe>
-
+				<iframe scrolling="no" frameborder="0" height="500" width="100%" src="./assets/sketches/dct/"></iframe>
 			</div>
 		</section>
 
@@ -120,7 +167,7 @@
 					utilizzare una seconda tabella di quantizzazione con i valori di crominanza per far sì che il numero degli zeri aumenti ancora.
                     Queste operazioni permettono di ridurre considerevolmente la quantità di pixel con valore.
 				</p>
-				<iframe scrolling=no frameborder=0 height=500 src="./assets/sketches/spirograph/"></iframe>
+				<iframe scrolling=no frameborder=0 height=500 src="./assets/sketches/quantization_visualization/"></iframe>
 
 			</div>
 		</section>
@@ -128,7 +175,7 @@
 		<!-- --------------------------------------------------------------------- -->
 
 		<section class="filetto">
-			<h4 class="titolo-sezione" id="rle-huffman">RLECodice Huffman</h4>
+			<h4 class="titolo-sezione" id="rle-huffman">RLE Codice Huffman</h4>
 			<div class="contenuto-sezione">
 				<p>
 					La dct e la quantizzazione attraversano ogni sezione dell'immagine trovando le aree ad alta frequenza, queste onde non vengono percepite 
@@ -142,10 +189,14 @@
 					le variazioni/ frequenze rispetto al valore medio "DC" . Questi passaggi complessi servono a passare dal dominio spaziale al dominio delle frequenze 
 					sfruttando così la debolezza dell'occhio umano.
 				</p>
-				<iframe scrolling=no frameborder=0 height=600 src="./assets/sketches/huffman_coding/index.html"></iframe>
-				<iframe scrolling=no frameborder=0 height=600 src="./assets/sketches/rle_coding/index.html"></iframe>
-				<iframe scrolling=no frameborder=0 height=700 src="./assets/sketches/huffman_rle_coding/index.html"></iframe>
-
+                <div id="sketch-huffman-rle-container">
+                    <iframe id="huffman-rle-iframe" scrolling="no" frameborder="0" height="600" width="100%" src="./assets/sketches/Onda_HUffman/" data-current-sketch="./assets/sketches/Onda_HUffman/" style="display: block;"></iframe>
+                </div>
+				<div class="sketch-controls">
+					<button onclick="showSketch('./assets/sketches/huffman_coding/index.html')">Huffman Coding</button>
+					<button onclick="showSketch('./assets/sketches/rle_coding/index.html')">RLE Coding</button>
+					<button onclick="showSketch('./assets/sketches/huffman_rle_coding/index.html')">Huffman + RLE Coding</button>
+				</div>
 			</div>
 		</section>
 
@@ -176,6 +227,7 @@
 			<details>
 				<summary>Bibliografia</summary>
 				<div class="bibliografia-contenuto">
+					<ul>
 						<li>
 							<a target="_blank" href="https://en.wikipedia.org/wiki/Trigonometric_functions">Wikipedia (en): Trigonometric functions</a>
 						</li>
@@ -199,6 +251,7 @@
 	</main>
 
 	<!-- --------------------------------------------------------------------- -->
+    <div id="sketch-container"></div>
 
 	<footer>
 		<div class="footer-contenuto-sinistra">
@@ -210,5 +263,26 @@
 			A.A 24/25</p>
 		</div>
 	</footer>
+    <script src="sketch.js"></script>
+	<script>
+		function showSketch(newSketchPath) {
+			const iframe = document.getElementById('huffman-rle-iframe');
+			if (iframe) {
+				const currentlySetPath = iframe.getAttribute('data-current-sketch');
+
+				if (currentlySetPath === newSketchPath && iframe.style.display !== 'none') {
+					// Sketch is currently shown and it's the one for the clicked button: hide it.
+					iframe.src = 'about:blank'; // Clear src to stop sketch execution
+					iframe.setAttribute('data-current-sketch', 'about:blank');
+					iframe.style.display = 'none';
+				} else {
+					// Either no sketch is shown, a different sketch is shown, or the clicked sketch was hidden: show it.
+					iframe.src = newSketchPath;
+					iframe.setAttribute('data-current-sketch', newSketchPath);
+					iframe.style.display = 'block';
+				}
+			}
+		}
+	</script>
 </body>
 </html>
