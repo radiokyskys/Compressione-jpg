@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulazione DCT Interattiva</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            background-color: #f0f0f0; 
+            font-family: 'Futura', sans-serif; 
+            padding: 5px; 
+            color: #333; 
+            box-sizing: border-box; 
+            overflow-x: hidden; /* Previene lo scroll orizzontale */
+        }
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1000px; 
+        }
+        #controls {
+            padding: 6px 15px; 
+            background-color: white; 
+            border-radius: 5px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px; 
+            width: 100%;
+            max-width: 280px; 
+            margin-bottom: 15px; 
+        }
+        #sliderLabel {
+            font-size: 0.8em; 
+            color: #34495e; 
+            text-align: center;
+            font-weight: 500; 
+            margin-bottom: 0px; 
+        }
+        input[type="range"] {
+            width: 80%; 
+            max-width: 160px; 
+            accent-color: #ff0000; 
+            cursor: pointer; 
+        }
+        #canvas-container {
+            width: 100%; 
+            margin-bottom: 10px; 
+            /* box-shadow: 0 3px 10px rgba(0,0,0,0.08); */ /* Commented out box-shadow */
+            border-radius: 5px; 
+            overflow: hidden; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background-color: #f0f0f0;
+        }
+        .hover-info { 
+            position: absolute; 
+            background-color: rgba(44, 62, 80, 0.85); 
+            color: white; 
+            padding: 3px 6px; 
+            border-radius: 3px; 
+            font-size: 0.7em; 
+            pointer-events: none; 
+            display: none; 
+            z-index: 1000; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12); 
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        
+        <div id="controls">
+            <label id="sliderLabel" for="quantizationSlider">Simulazione DCT</label>
+            <input type="range" id="quantizationSlider" min="0" max="14" value="7">
+        </div>
+
+        <div id="canvas-container">
+            </div>
+        
+        <div id="hoverInfoDiv" class="hover-info">Indici (u,v): -, -</div>
+
+    </div>
+
+    <script src="sketch.js"></script> 
+</body>
+</html> 
