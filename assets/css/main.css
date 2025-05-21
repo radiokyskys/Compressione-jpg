@@ -8,14 +8,19 @@ html {
 
 body {
 	background-color: rgb(255, 255, 255); /* white, #FFFFFF */
-	padding: 2em;
-	margin: 2em clamp(2em, 5vw + 1em, 6em);
+	padding: 0;
+	margin: 0;
 	color: rgb(0, 0, 0);
 	font-family: "Helvetica", sans-serif;
 	font-optical-sizing: auto;
 	font-weight: 400;
 	font-style: normal;
 	font-variation-settings: "slnt" 0;
+}
+
+main.contenitore { /* Added to select the main content wrapper */
+    background-color: #ffffff; /* Ensure white background */
+    /* Other styles for main.contenitore might exist or be added here */
 }
 
 a {
@@ -32,6 +37,10 @@ a:hover{
 	margin-left: 1em; */
 }
 
+/* Keep visited links red in the 'Come è nata?' section */
+.filetto:first-of-type .contenuto-sezione p a:visited {
+    color: red;
+}
 
 p {
 	margin: 0 0 1em 0;
@@ -75,16 +84,37 @@ iframe {
 
 header,
 section {
-	margin-bottom: 2em;
-	padding-top: 0.25em;
+	margin-bottom: 1em;
+	padding-top: 1em;
 }
 
+/* Reduce bottom margin specifically for the DCT section */
+#dct {
+	margin-bottom: 0; 
+}
+
+/* Reduce top padding specifically for the Quantizzazione section */
+#quantizzazione {
+	padding-top: 0.25em; /* Was inheriting 1em from general section rule */
+}
+
+header { /* Added specific rules for header alignment */
+	max-width: 45em;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative; /* Added for positioning */
+	left: -2.5em;       /* MODIFIED: Was -2em, for a smaller additional shift left */
+}
 
 .filetto {
 	border-top: solid 2px rgb(0, 0, 0);
+	max-width: 50em; /* MODIFIED: Was 45em, to make it a bit longer */
+	margin-left: auto;  /* Added for centering */
+	margin-right: auto; /* Added for centering */
 }
 .bibliografia-container {
 	border-top: solid 2px rgb(0, 0, 0);
+	padding-top: 60px;
 }
 .footer {
 	border-top: solid 2px rgb(0, 0, 0);
@@ -99,6 +129,13 @@ section {
 
 .contenuto-sezione {
 	margin-left: 0;
+}
+
+/* Constrain content width within .filetto sections */
+.filetto > .contenuto-sezione {
+	max-width: 45em;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 ul {
@@ -134,17 +171,27 @@ ul {
 
 details summary {
     font-weight: bold;
-    font-size: 1.2em;
+    font-size: 1.5em; /* Match h4 */
     color: #000000;
-    padding: 10px;
+    padding: 10px 0; /* Adjust padding, remove horizontal for centering */
     cursor: pointer; 
     outline: none;
     border-radius: 3px;
     transition: background-color 0.3s ease;
+    display: block; /* Allow margin auto and max-width */
+    max-width: 34em; /* Match .titolo-sezione */
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1em; /* Space below title when open */
 }
 
 .bibliografia-contenuto {
-    padding: 15px;
+    padding: 15px 0; 
+    max-width: 45em; 
+    margin-left: auto; 
+    margin-right: auto; 
+    position: relative; /* Added for shifting */
+    left: -1em;         /* Adjusted shift to 1em to the left */
 }
 
 .bibliografia-contenuto p {
@@ -154,7 +201,7 @@ details summary {
 
 .bibliografia-contenuto ul {
     list-style-type: disc; /* Stile dei pallini dell'elenco */
-    padding-left: 0px; /* Spazio a sinistra per i pallini */
+    padding-left: 2em; /* Indent list items */
     margin-bottom: 0;
 }
 
@@ -163,8 +210,12 @@ details summary {
 }
 
 .bibliografia-contenuto a {
-    color: #000000;
+    color: red;
     text-decoration: none;
+}
+
+.bibliografia-contenuto a:visited {
+    color: red;
 }
 
 .bibliografia-contenuto a:hover {
@@ -172,29 +223,21 @@ details summary {
 }
 
 footer {
-   
-    border-top: 1px solid #000000;
-    margin-top: 20px; 
-    padding-top: 20px; 
+    color: #000000;
+    border-top: 2px solid #000000; /* Consistent with other separators */
+    margin: 0; /* Remove all external margins */
+    padding-top: 0px; /* Minimized padding */
+    padding-bottom: 0px; /* Minimized padding */
 }
 
-footer {
-   
-    color: #000000;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    border-top: 1px solid #000000;
-   
-}
-footer {
-    display: flex;                 /* 1. Rende il footer un contenitore Flexbox */
-    justify-content: space-between;/* 2. Spinge il primo figlio a sinistra e il secondo a destra,
-                                          distribuendo lo spazio tra di loro. */
-    align-items: center;          
-    color: #000000;
-    
-    border-top: 2px solid #000000;
-    min-height: 50px;              /* Altezza minima per dare spazio alla centratura verticale */
+.footer-inner-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 45em;   /* Align with main content blocks like paragraphs */
+    margin-left: auto; /* Center the inner content block */
+    margin-right: auto;/* Center the inner content block */
+    min-height: 50px; /* Applied to the content wrapper */
 }
 
 /* Stili per i paragrafi all'interno dei blocchi, per evitare margini indesiderati */
@@ -208,3 +251,42 @@ footer {
 .footer-contenuto-destra {
     text-align: right;
 }
+
+.text-spacing {
+	margin-top: 2em;
+}
+
+/* Styles for sketch buttons and iframes */
+.sketch-buttons {
+    margin-bottom: 1em; /* Add some space below the buttons */
+    margin-top: 4em; /* Add space above the buttons */
+    display: flex; /* Arrange buttons in a row */
+    gap: 1em; /* Space between buttons */
+    justify-content: center; /* Center the buttons */
+}
+
+.sketch-buttons button {
+    padding: 0.8em 1.5em;
+    font-size: 0.9em;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.sketch-buttons button:hover {
+    background-color: #e0e0e0;
+}
+
+.sketch-iframe {
+    display: none; /* Initially hide all iframes */
+    width: 100%;
+    border: none; /* Ensure no border from browser defaults */
+}
+
+.sketch-iframes-container {
+    margin-top: 1em; /* Space above the iframe container */
+    margin-bottom: 4em; /* Add space below the iframe container */
+}
+
