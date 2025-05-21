@@ -3,12 +3,20 @@ let huffmanCodes = {};
 let huffmanEncoded = '';
 let rleEncoded = '';
 let inputField;
+let paragraph;
 
 function setup() {
-  createCanvas(800, 700);
-  createP("Huffman + RLE – Inserisci solo numeri:");
-  inputField = createInput();
+  let canvasContainer = select('#canvas-container');
+  let cnv = createCanvas(canvasContainer.width, canvasContainer.height);
+  cnv.parent('canvas-container');
+
+  paragraph = createP("Huffman + RLE – Inserisci solo numeri:");
+  paragraph.parent('controls-container');
+
+  inputField = createInput('');
+  inputField.parent('controls-container');
   inputField.input(processInput);
+
   textFont('monospace');
   textSize(16);
 }
@@ -136,7 +144,7 @@ function drawScrollableText(str, x, yStartBaseline, w, h, displayLineHeight = 20
 }
 
 function draw() {
-  background(255);
+  background(240);
   fill(0);
 
   // Parametri di layout
@@ -217,4 +225,9 @@ function draw() {
     text("Output RLE su Huffman:", xPosition, currentY + labelBaselineOffset);
     drawScrollableText(rleEncoded, xPosition, currentY + reservedHeightForLabelArea, contentWidth, scrollableTextAreaHeight, textLineHeight);
   }
+}
+
+function windowResized() {
+  let canvasContainer = select('#canvas-container');
+  resizeCanvas(canvasContainer.width, canvasContainer.height);
 } 
