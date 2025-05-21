@@ -2,12 +2,18 @@ let inputText = '';
 let encoded = '';
 let effectiveEncoded = '';
 let inputField;
+let titleP;
 
 function setup() {
-  createCanvas(800, 600);
+  let canvasContainer = select('#canvas-container');
+  let cnv = createCanvas(canvasContainer.width, canvasContainer.height);
+  cnv.parent('canvas-container');
 
-  let titleP = createP("RLE – Inserisci solo numeri:");
-  inputField = createInput();
+  titleP = createP("RLE – Inserisci solo numeri:");
+  titleP.parent('controls-container');
+
+  inputField = createInput('');
+  inputField.parent('controls-container');
   inputField.input(processInput);
 
   textFont('monospace');
@@ -89,7 +95,7 @@ function drawScrollableText(str, x, yStartBaseline, w, h, displayLineHeight = 20
 }
 
 function draw() {
-  background(255);
+  background(240);
   fill(0);
 
   // Parametri di layout (come da ultima versione)
@@ -137,4 +143,9 @@ function draw() {
   // --- Sezione 3: Output RLE compatto (ncncnc...) ---
   text("Output RLE compatto (effettivo output RLE):", xPosition, currentY + labelBaselineOffset);
   drawScrollableText(effectiveEncoded, xPosition, currentY + reservedHeightForLabelArea, contentWidth, textAreaCalculatedHeight, scrollTextLineHeight);
+}
+
+function windowResized() {
+  let canvasContainer = select('#canvas-container');
+  resizeCanvas(canvasContainer.width, canvasContainer.height);
 } 
