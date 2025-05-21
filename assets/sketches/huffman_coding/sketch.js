@@ -1,13 +1,22 @@
-let inputText = '';
+let inputField;
 let huffmanCodes = {};
 let encoded = '';
+let inputText = '';
+let paragraph;
 
 function setup() {
-  createCanvas(800, 600);
-  createP("Huffman – Inserisci solo numeri:");
-  inputField = createInput();
+  let canvasContainer = select('#canvas-container');
+  let cnv = createCanvas(canvasContainer.width, canvasContainer.height);
+  cnv.parent('canvas-container');
+
+  paragraph = createP("Huffman – Inserisci solo numeri:");
+  paragraph.parent('controls-container');
+
+  inputField = createInput('');
+  inputField.parent('controls-container');
   inputField.input(processInput);
-  textFont('monospace');
+
+  textFont('Futura', 'monospace');
   textSize(16);
 }
 
@@ -69,18 +78,23 @@ function drawScrollableText(str, x, y, w, h, lineHeight = 20) {
 }
 
 function draw() {
-  background(255);
+  background(240);
   fill(0);
   text("Input:", 20, 30);
-  drawScrollableText(inputText, 80, 30, 700, 80);
+  drawScrollableText(inputText, 80, 30, width - 100, height * 0.15);
 
-  text("Codici Huffman:", 20, 120);
+  text("Codici Huffman:", 20, height * 0.25);
   let sortedDigits = Object.keys(huffmanCodes).sort();
   for (let i = 0; i < sortedDigits.length; i++) {
     let digit = sortedDigits[i];
-    text(`${digit} → ${huffmanCodes[digit]}`, 40, 140 + i * 20);
+    text(`${digit} → ${huffmanCodes[digit]}`, 40, height * 0.25 + 20 + i * 20);
   }
 
-  text("Output codificato:", 20, 360);
-  drawScrollableText(encoded, 20, 380, 760, 200);
-} 
+  text("Output codificato:", 20, height * 0.8);
+  drawScrollableText(encoded, 20, height * 0.8 + 20, width - 40, height * 0.2);
+}
+
+function windowResized() {
+  let canvasContainer = select('#canvas-container');
+  resizeCanvas(canvasContainer.width, canvasContainer.height);
+}
