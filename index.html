@@ -204,8 +204,8 @@
         <p>L'obiettivo? Semplice ma ambizioso: creare un metodo efficace per comprimere immagini digitali a tono continuo (fotografie, per intenderci), riducendone drasticamente le dimensioni del file, pur mantenendo una qualità visiva accettabile.</p>
         <p>La compressione JPEG è di tipo lossy, ovvero "con perdita di informazione". Questo significa che, per raggiungere alti rapporti di compressione, alcune informazioni dell'immagine originale vengono scartate in modo irreversibile (più è alto è il livello di compressione più dati vengono arrotondati, o eliminati). Tranquillo, non è così drammatico come sembra! L'idea geniale è quella di eliminare i dettagli che l'occhio umano percepisce meno, cercando di preservare ciò che conta davvero per la nostra vista.</p>
 
-        <p><strong>Passo Passo nella Compressione JPEG</strong></p>
-        <p>Vediamo ora le tappe fondamentali che un'immagine percorre durante il processo di compressione JPEG.</p>
+        <p><strong>Vediamo ora le tappe fondamentali che un'immagine percorre durante il processo di compressione JPEG.</strong></p>
+        
 
         <h2>1. Conversione dello Spazio Colore e Sottocampionatura</h2>
         <p><strong>Da RGB a YCbCr</strong></p>
@@ -217,7 +217,7 @@
         <p><strong>Y: Rappresenta la componente di luminanza (il "bianco e nero" dell'immagine).</strong><br>
             <strong>Cb: Rappresenta la componente di crominanza blu (la differenza tra il blu e un segnale di riferimento).</strong><br>
             <strong>Cr: Rappresenta la componente di crominanza rossa (la differenza tra il rosso e un segnale di riferimento).</strong></p>
-        <p>Una volta separata la luminanza dalla crominanza, si può applicare la sottocampionatura della croma. Dato che siamo meno sensibili ai dettagli di colore, possiamo permetterci di memorizzare meno informazioni sulla crominanza rispetto alla luminanza, risparmiando un bel po' di spazio. Per fare ciò, l'intera immagine viene suddivisa in "blocchetti" di pixel 2x2, per tutti e tre i valori Y, Cb e Cr.</p>
+        <p>Una volta separata la luminanza dalla crominanza, si può applicare la sottocampionatura della croma. Dato che siamo meno sensibili ai dettagli di colore, possiamo permetterci di memorizzare meno informazioni sulla crominanza rispetto alla luminanza, risparmiando un bel po' di spazio. Per fare ciò, l'intera immagine viene suddivisa in "blocchi" di pixel 2x2, per tutti e tre i canali Y, Cb e Cr.</p>
         
         <img src="assets/images/Blocchetti 2x2 YCbCr.png" alt="Illustrazione dei blocchetti 2x2 YCbCr" class="immagine-contenuto">
         
