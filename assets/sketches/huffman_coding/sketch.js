@@ -51,7 +51,7 @@ function processInput() {
 
   encoded = '';
   for (let char of inputText) {
-    encoded += huffmanCodes[char];
+    encoded += huffmanCodes[char] + ' ';
   }
 }
 
