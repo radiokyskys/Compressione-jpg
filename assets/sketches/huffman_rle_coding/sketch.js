@@ -150,58 +150,68 @@ function draw() {
   // Parametri di layout
   let topPageMargin = 20;
   let bottomPageMargin = 20;
-  let xPosition = 20;
-  let contentWidth = width - (2 * xPosition);
+  let leftMargin = 20;
+  let rightMargin = 20;
+  let contentWidth = width - leftMargin - rightMargin;
+  
+  // Dividiamo lo spazio orizzontalmente
+  let leftColumnWidth = contentWidth * 0.6; // 60% per la colonna principale
+  let rightColumnWidth = contentWidth * 0.4; // 40% per i codici Huffman
+  let columnGap = 20; // Spazio tra colonne
 
   let labelBaselineOffset = 16;
   let reservedHeightForLabelArea = 40;
   let textLineHeight = 20;
 
-  // Modifica Richiesta 1: Riduci lo spazio dopo la sezione Input
-  let gapAfterInputSection = 10; // Spazio ridotto specificamente dopo l'Input
-  let gapBetweenOtherSections = 15; // Spazio per le altre sezioni (può essere uguale a gapAfterInputSection se si preferisce)
+  let gapAfterInputSection = 10;
+  let gapBetweenOtherSections = 15;
 
+  let leftCurrentY = topPageMargin;
+  let rightCurrentY = topPageMargin;
 
-  let currentY = topPageMargin;
+  // ----- COLONNA SINISTRA -----
 
   // --- Sezione 1: Input (Scorrevole) ---
-  let inputSectionHeight = 100; 
-  text("Input:", xPosition, currentY + labelBaselineOffset);
-  drawScrollableText(inputText, xPosition, currentY + reservedHeightForLabelArea, contentWidth, inputSectionHeight - reservedHeightForLabelArea, textLineHeight);
-  currentY += inputSectionHeight + gapAfterInputSection; // Usa gapAfterInputSection
+  let inputSectionHeight = 100;
+  text("Input:", leftMargin, leftCurrentY + labelBaselineOffset);
+  drawScrollableText(inputText, leftMargin, leftCurrentY + reservedHeightForLabelArea, 
+                    leftColumnWidth, inputSectionHeight - reservedHeightForLabelArea, textLineHeight);
+  leftCurrentY += inputSectionHeight + gapAfterInputSection;
 
-  // --- Sezione 2: Codici Huffman (Non Scorrevole, altezza dinamica) ---
-  text("Codici Huffman:", xPosition, currentY + labelBaselineOffset);
-  let huffmanTableStartY = currentY + reservedHeightForLabelArea;
+  // ----- COLONNA DESTRA -----
+  
+  // --- Sezione 2: Codici Huffman (a destra) ---
+  text("Codici Huffman:", leftMargin + leftColumnWidth + columnGap, rightCurrentY + labelBaselineOffset);
+  let huffmanTableStartY = rightCurrentY + reservedHeightForLabelArea;
   let sortedDigits = Object.keys(huffmanCodes).sort();
-  let huffmanTableContentHeight = 0;
+  
   if (sortedDigits.length > 0) {
-      for (let i = 0; i < sortedDigits.length; i++) {
-        let digit = sortedDigits[i];
-        if (huffmanCodes[digit] !== undefined) {
-            text(`${digit} → ${huffmanCodes[digit]}`, xPosition + 20, huffmanTableStartY + i * textLineHeight);
-        }
+    for (let i = 0; i < sortedDigits.length; i++) {
+      let digit = sortedDigits[i];
+      if (huffmanCodes[digit] !== undefined) {
+        text(`${digit} → ${huffmanCodes[digit]}`, leftMargin + leftColumnWidth + columnGap + 20, 
+             huffmanTableStartY + i * textLineHeight);
       }
-      huffmanTableContentHeight = sortedDigits.length * textLineHeight;
+    }
   }
-  currentY += reservedHeightForLabelArea + huffmanTableContentHeight + gapBetweenOtherSections; // Usa gapBetweenOtherSections
+  
+  // ----- TORNIAMO ALLA COLONNA SINISTRA -----
 
-  // Calcolo altezze per le restanti 2 sezioni scorrevoli
-  let remainingCanvasHeight = height - currentY - bottomPageMargin;
+  // Calcolo altezze per le restanti sezioni scorrevoli nella colonna sinistra
+  let remainingCanvasHeight = height - leftCurrentY - bottomPageMargin;
   let numRemainingScrollableSections = 2;
   let heightPerRemainingSection = 0;
   let scrollableTextAreaHeight = 0;
 
   if (numRemainingScrollableSections > 0 && remainingCanvasHeight > 0) {
-      // Il gap tra queste due sezioni rimanenti (Output Huffman e Output RLE) sarà gapBetweenOtherSections
-      let totalGapHeightForRemaining = gapBetweenOtherSections * (numRemainingScrollableSections - 1);
-      if (totalGapHeightForRemaining < 0) totalGapHeightForRemaining = 0;
+    let totalGapHeightForRemaining = gapBetweenOtherSections * (numRemainingScrollableSections - 1);
+    if (totalGapHeightForRemaining < 0) totalGapHeightForRemaining = 0;
 
-      heightPerRemainingSection = Math.floor((remainingCanvasHeight - totalGapHeightForRemaining) / numRemainingScrollableSections);
+    heightPerRemainingSection = Math.floor((remainingCanvasHeight - totalGapHeightForRemaining) / numRemainingScrollableSections);
   }
   
   if (heightPerRemainingSection > reservedHeightForLabelArea) {
-      scrollableTextAreaHeight = heightPerRemainingSection - reservedHeightForLabelArea;
+    scrollableTextAreaHeight = heightPerRemainingSection - reservedHeightForLabelArea;
   }
 
   if (scrollableTextAreaHeight < textLineHeight && textLineHeight > 0) {
@@ -210,20 +220,21 @@ function draw() {
     scrollableTextAreaHeight = 0;
   }
 
-
-  // --- Sezione 3: Output Huffman (Scorrevole) ---
-  if (currentY < height - bottomPageMargin - reservedHeightForLabelArea && scrollableTextAreaHeight > 0) {
-    text("Output Huffman:", xPosition, currentY + labelBaselineOffset);
-    drawScrollableText(huffmanEncoded, xPosition, currentY + reservedHeightForLabelArea, contentWidth, scrollableTextAreaHeight, textLineHeight);
-    currentY += reservedHeightForLabelArea + scrollableTextAreaHeight + gapBetweenOtherSections; // Usa gapBetweenOtherSections
+  // --- Sezione 3: Output Huffman (Scorrevole, nella colonna sinistra) ---
+  if (leftCurrentY < height - bottomPageMargin - reservedHeightForLabelArea && scrollableTextAreaHeight > 0) {
+    text("Output Huffman:", leftMargin, leftCurrentY + labelBaselineOffset);
+    drawScrollableText(huffmanEncoded, leftMargin, leftCurrentY + reservedHeightForLabelArea, 
+                      leftColumnWidth, scrollableTextAreaHeight, textLineHeight);
+    leftCurrentY += reservedHeightForLabelArea + scrollableTextAreaHeight + gapBetweenOtherSections;
   } else {
-      currentY = height; // Forza la fine del disegno se non c'è spazio
+    leftCurrentY = height;
   }
 
-  // --- Sezione 4: Output RLE su Huffman (Scorrevole) ---
-   if (currentY < height - bottomPageMargin - reservedHeightForLabelArea && scrollableTextAreaHeight > 0) {
-    text("Output RLE su Huffman:", xPosition, currentY + labelBaselineOffset);
-    drawScrollableText(rleEncoded, xPosition, currentY + reservedHeightForLabelArea, contentWidth, scrollableTextAreaHeight, textLineHeight);
+  // --- Sezione 4: Output RLE su Huffman (Scorrevole, nella colonna sinistra) ---
+  if (leftCurrentY < height - bottomPageMargin - reservedHeightForLabelArea && scrollableTextAreaHeight > 0) {
+    text("Output RLE su Huffman:", leftMargin, leftCurrentY + labelBaselineOffset);
+    drawScrollableText(rleEncoded, leftMargin, leftCurrentY + reservedHeightForLabelArea, 
+                      leftColumnWidth, scrollableTextAreaHeight, textLineHeight);
   }
 }
 
