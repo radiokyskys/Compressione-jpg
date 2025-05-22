@@ -37,16 +37,19 @@ function processInput() {
     if (inputText[i] === current) {
       count++;
     } else {
-      resultForFormattedEncoded.push(`| ${current},${count} `);
+      resultForFormattedEncoded.push(`(${current},${count}), `);
       compactRLEString += `${current}${count}`;
       current = inputText[i];
       count = 1;
     }
   }
-  resultForFormattedEncoded.push(`| ${current},${count} `);
+  resultForFormattedEncoded.push(`(${current},${count}), `);
   compactRLEString += `${current}${count}`;
   
-  encoded = resultForFormattedEncoded.join(''); 
+  encoded = resultForFormattedEncoded.join('');
+  if (encoded.length > 2) {
+    encoded = encoded.slice(0, -2);
+  }
   effectiveEncoded = compactRLEString;
 }
 
