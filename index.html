@@ -221,13 +221,14 @@
         
         <img src="assets/images/Blocchetti 2x2 YCbCr.png" alt="Illustrazione dei blocchetti 2x2 YCbCr" class="immagine-contenuto">
         
-        <p><strong>Ecco i principali schemi di sottocampionatura:</strong></p>
+        <p><strong>Adesso prendiamo in riferimento uno di questi blocchi 2x2 per ciascuno dei canali dell'immagine convertita (YCbCr) e campiamo meglio cosa e quali sono gli schemi di sotto campionatura:</strong></p>
         <img src="assets/images/Sottocampionatura Della Crominanza 1.png" alt="Sottocampionatura Della Crominanza" class="immagine-contenuto">
         
         <p><strong>(4:4:4):</strong> Nessuna sottocampionatura. Per ogni 4 pixel di luminanza (Y), ci sono 4 campioni di Cb e 4 campioni di Cr. Massima qualità del colore, ma minor compressione. Immagina un blocco di 2x2 pixel: tutti e 4 i pixel hanno i loro valori Y, Cb e Cr distinti.</p>
         <p><strong>(4:2:2):</strong> Per ogni 4 pixel di luminanza in una riga (ad esempio, un blocco 2x2), ci sono 2 campioni di Cb e 2 campioni di Cr. Questi campioni di croma vengono condivisi orizzontalmente. In pratica, in un blocco 2x2, avremo 4 valori Y, ma solo 2 valori Cb e 2 valori Cr (uno valore medio per ogni coppia di pixel adiacenti orizzontalmente). La risoluzione verticale del colore è piena, quella orizzontale è dimezzata.</p>
         <p><strong>(4:2:0):</strong> Questo è lo schema più comune per JPEG e video. Per ogni blocco di 4 pixel di luminanza (un quadrato 2x2), c'è solo 1 campione di Cb e 1 campione di Cr. Questi due valori di croma vengono condivisi tra tutti e quattro i pixel del blocco 2x2. In pratica, la risoluzione del colore, sia orizzontale che verticale (il valore medio tra i 4 precedenti), viene dimezzata rispetto alla luminanza. Questo schema offre la compressione maggiore perché scarta più informazioni di colore, sfruttando al massimo la minore sensibilità dell'occhio a questi dettagli.</p>
 
+        <p><strong>La sottocampionatura è uno dei primi e più efficaci metodi per ridurre i dati, ed è il primo esempio di come JPEG sfrutti le caratteristiche della percezione visiva umana.</strong></p>
         <button class="collapsible-button optional-button">Perché 4:2:0 e non 4:1:1? (facoltativo per la comprensione del JPEG)</button>
         <div class="collapsible-content">
             <p>La nomenclatura della sottocampionatura della croma, come "4:2:0", può sembrare un po' controintuitiva all'inizio.</p>
@@ -250,7 +251,6 @@
             <p>In breve: 4:2:0 significa che il colore è campionato con metà risoluzione orizzontale rispetto alla luminanza, e la riga di campioni di colore sottostante è identica a quella sopra. Questo porta a 1 campione di Cb e 1 di Cr per ogni blocco 2x2 di luminanza.</p>
         </div>
 
-        <p><strong>La sottocampionatura è uno dei primi e più efficaci metodi per ridurre i dati, ed è il primo esempio di come JPEG sfrutti le caratteristiche della percezione visiva umana.</strong></p>
 
         <h2>2. Trasformata Discreta del Coseno (DCT)</h2>
         <p><strong>Ora inizia la magia vera e propria!</strong></p>
@@ -287,9 +287,9 @@
         <div> 
             <p><strong>Sketches su Codifica Huffman, RLE e loro Unione:</strong></p>
 			<div class="sketch-controls">
-				<button onclick="loadInteractiveSketch('./assets/sketches/huffman_coding/index.html')">Huffman Coding</button>
-				<button onclick="loadInteractiveSketch('./assets/sketches/rle_coding/index.html')">RLE Coding</button>
-				<button onclick="loadInteractiveSketch('./assets/sketches/huffman_rle_coding/index.html')">Huffman + RLE Coding</button>
+				<button onclick="loadInteractiveSketch('./assets/sketches/huffman_coding/index.html')">Huffman</button>
+				<button onclick="loadInteractiveSketch('./assets/sketches/rle_coding/index.html')">RLE</button>
+				<button onclick="loadInteractiveSketch('./assets/sketches/huffman_rle_coding/index.html')">Huffman + RLE </button>
 			</div>
 			<div id="interactive-sketch-display-area" style="margin-bottom: 15px; text-align: center;">
 				<iframe id="interactive-sketch-iframe" scrolling="no" frameborder="0" height="500" width="90%" style="display: none; border: 1px solid #ccc;" data-current-interactive-sketch="about:blank"></iframe>
