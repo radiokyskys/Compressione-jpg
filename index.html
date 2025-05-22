@@ -1,288 +1,392 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-	<meta charset="utf-8">
-	<title>Compressione JPEG</title>
-	<meta name="author"      content="Nome Cognome">
-	<meta name="description" content="Descrizione">
-	<meta name="viewport"    content="width=device-width, initial-scale=1">
-
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-
-	<link rel="stylesheet"   href="./assets/css/main.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sketch Lettura Zig-Zag (RLE)</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
+    <title>La Compressione JPEG</title>
     <style>
-        /* Stile per il font personalizzato */
-        @font-face {
-            font-family: 'MyPixelFont'; 
-            /* Assicurati che il file ChicagoFLF.ttf sia nella stessa cartella di index.html,
-               o aggiorna il percorso se si trova altrove. */
-            src: url('ChicagoFLF.ttf') format('truetype'); 
+        
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+        body {
+            font-family: "Inter", Arial, sans-serif; 
+            line-height: 1.7;
+            margin: 40px;
+            background-color: #FFFFFF;
+            color: #000000; 
+            font-size: 1.125em;
         }
-        body { 
-            margin: 0; 
+
+        .site-wrapper {
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #000000; 
+            text-align: center;
+            border-bottom: 3px solid #FF0000;
+            padding-bottom: 15px;
+            font-size: 2.8em;
+            margin-bottom: 40px;
+            font-weight: 700; /* Usa il peso bold di Inter */
+        }
+        h2 {
+            color: #FF0000; 
+            margin-top: 378px;
+            margin-bottom: 25px;
+            border-left: 5px solid #FF0000;
+            padding-left: 15px;
+            font-size: 2.2em;
+            font-weight: 700; /* Usa il peso bold di Inter */
+        }
+
+        h3 { 
+            color: #CC0000; 
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            font-weight: 700; /* Usa il peso bold di Inter */
+        }
+        p {
+            margin-bottom: 25px;
+            font-size: 1.1em;
+            /* Erediterà Inter Regular (400) dal body */
+        }
+        strong { 
+            color: #000000; 
+            font-weight: 700; /* Assicura che strong usi il peso bold di Inter */
+        }
+        .sketch-placeholder { 
+            background-color: #e9e9e9;
+            border: 1px dashed #999;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+            font-style: italic;
+            color: #000000;
+            border-radius: 4px;
+        }
+        .collapsible-button {
+            background-color: #FF0000;
+            color: white;
+            padding: 12px 18px;
+            border: 1px solid #FF0000;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: underline;
+            display: inline-block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-size: 1.0em;
+            font-weight: 700; /* Usa il peso bold di Inter */
+        }
+        .collapsible-button:hover {
+            background-color: #CC0000;
+            border-color: #CC0000;
+        }
+
+        .collapsible-button.optional-button {
+            background-color: #f5f5f5;
+            color: #000000;         
+            border: 1px solid #dddddd;
+            font-weight: 400; /* Usa il peso regular di Inter */
+            text-decoration: underline;
+        }
+        .collapsible-button.optional-button:hover {
+            background-color: #e0e0e0;
+            border-color: #cccccc;
+            color: #000000;
+        }
+
+        .collapsible-content {
+            padding: 20px 25px;
+            background-color: #fff7f7;
+            border: 1px solid #ffdddd;
+            border-top: none;
+            display: none;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border-radius: 0 0 5px 5px;
+        }
+        .collapsible-content p:first-child {
+            margin-top: 15px;
+        }
+         .collapsible-content p:last-child {
+            margin-bottom: 15px;
+        }
+        ul {
+            margin-bottom: 25px;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        /* --- CSS PER IMMAGINI E SKETCH --- */
+        .immagine-contenuto {
+            max-width: 80%;
+            height: auto;   
+            display: block; 
+            margin-top: 20px;
+            margin-bottom: 20px;
+            margin-left: auto; 
+            margin-right: auto; 
+            border-radius: 4px; 
+            border: 1px solid #ddd;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        .blocco-sketch-multiplo {
+            margin-bottom: 15px; 
+        }
+        
+        .sketch-container {
+            width: 100%;
+            margin: 20px auto;
             display: flex; 
-            flex-direction: column; /* Added to stack children vertically */
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            background-color: #ffffff; /* Sfondo bianco */
-            font-family: 'Helvetica', monospace; /* Applica Helvetica come font principale */
-            color: #000000; /* Colore testo nero */
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #ccc;
         }
-        #sketch-container canvas {
-            border: 1px solid #555;
-        }
-        .sketch-controls {
-            text-align: center; /* Centra i bottoni */
-            margin-bottom: 5px; /* Ridotto spazio sotto i bottoni */
-        }
+
         .sketch-controls button {
-            padding: 10px 30px; /* Ulteriormente aumentato padding per bottoni più grandi */
-            font-size: 20px;    /* Ulteriormente aumentata dimensione del testo del bottone */
-            margin: 0 5px;      /* Aggiunge un po' di spazio tra i bottoni */
-            color: red;         /* Colore testo rosso */
-            font-family: 'Futura', sans-serif; /* Font Futura */
+            padding: 15px 30px; /* Increased padding for larger buttons */
+            font-size: 1.2em;   /* Increased font size */
+            color: red;         /* Text color set to red */
+            background-color: #f0f0f0; /* Light grey background, adjust as needed */
+            border: 1px solid #ccc;      /* Border, adjust as needed */
+            border-radius: 5px;          /* Rounded corners */
+            margin: 5px;                 /* Margin around buttons */
+            cursor: pointer;             /* Pointer cursor on hover */
         }
-        #rle-huffman {
-            margin-bottom: 10px; /* Riduce lo spazio sotto la sezione degli sketch RLE/Huffman */
+
+        .sketch-controls button:hover {
+            background-color: #e0e0e0; /* Slightly darker background on hover */
         }
-        main.contenitore header > h1,
-        main.contenitore section.filetto > h4.titolo-sezione {
-            text-align: left; /* Assicura allineamento a sinistra per titolo e sottotitoli */
+        /* --- FINE CSS PER IMMAGINI E SKETCH --- */
+
+        .bibliography-links a {
+            color: #000000; /* Black color for bibliography links */
         }
-        #sketch-huffman-rle-container {
-            margin-bottom: 20px; /* Adds space below the iframe container */
+
+        footer {
+            display: flex; /* Added for flexbox layout */
+            justify-content: space-between; /* Added to push items apart */
+            align-items: center; /* Added to vertically align items if they have different heights */
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eeeeee;
+            font-size: 0.9em;
+            color: #555555;
         }
+
+        footer p { /* Remove default margins from paragraphs inside footer */
+            margin: 0;
+        }
+
+        /* .footer-left and .footer-right are already handled by justify-content: space-between */
+
     </style>
 </head>
 <body>
-	<main class="contenitore">
 
-		<!-- --------------------------------------------------------------------- -->
+    <div class="site-wrapper">
 
-		<header>
-			<span></span>
-			<h1>Compressione JPEG</h1>
-			<h2></h2>
-		</header>
+        <h1>LA COMPRESSIONE JPEG</h1>
 
-		<!-- --------------------------------------------------------------------- -->
+        <p><strong>Un accenno sulla nascita della compressione JPEG</strong></p>
+        <p>Immagina un mondo senza internet veloce e smartphone con memorie gigantesche, bene, questa era la realtà fino agli anni 2000. Le immagini digitali, specialmente quelle a colori, erano file pesantissimi! Trasmetterle o archiviarle era un vero incubo. È qui che entra in gioco il Joint Photographic Experts Group (JPEG), un comitato di esperti ISO/CCITT che alla fine degli anni '80 e inizio anni '90 ha sviluppato lo standard JPEG.</p>
+        <p>L'obiettivo? Semplice ma ambizioso: creare un metodo efficace per comprimere immagini digitali a tono continuo (fotografie, per intenderci), riducendone drasticamente le dimensioni del file, pur mantenendo una qualità visiva accettabile.</p>
+        <p>La compressione JPEG è di tipo lossy, ovvero "con perdita di informazione". Questo significa che, per raggiungere alti rapporti di compressione, alcune informazioni dell'immagine originale vengono scartate in modo irreversibile (più è alto è il livello di compressione più dati vengono arrotondati, o eliminati). Tranquillo, non è così drammatico come sembra! L'idea geniale è quella di eliminare i dettagli che l'occhio umano percepisce meno, cercando di preservare ciò che conta davvero per la nostra vista.</p>
 
-		<section class="filetto">
-			<h4 class="titolo-sezione">Come è nata?</h4>
-			<div class="contenuto-sezione">
-				<p>
-                    La compressione "JPEG" è nata nel 1992; questo acronimo riassume "Joint Photographic Experts Group",
-                    il nome del comitato internazionale di esperti che ha sviluppato lo standard per la compressione delle immagini digitali. 
-                    Questa tecnica viene utilizzata per ridurre le dimensioni delle immagini rendendole più facili da archiviare e trasmettere.<br><br> 
-                    <span class="intro-frase-bold">Questo processo è composto da 5 fasi:</span> <br><br> - <a href="#conversione-spazio-colore">Conversione dello Spazio Colore</a> <br> - <a href="#sottocampionamento-crominanza">Sottocampionamento della Crominanza</a><br> - 
-                    <a href="#dct">Trasformazione Discreta del Coseno</a><br> - <a href="#quantizzazione">Quantizzazione</a><br> - <a href="#rle-huffman">codifica a Lunghezza Variabile e la codifica Huffman</a>. <br><br>
-                    Di seguito spiegheremo uno a uno i diversi passaggi che portano al compimento della compressione. 
-				</p>
-				<!-- Placeholder for a new sketch -->
+        <p><strong>Passo Passo nella Compressione JPEG</strong></p>
+        <p>Vediamo ora le tappe fondamentali che un'immagine percorre durante il processo di compressione JPEG.</p>
+
+        <h2>1. Conversione dello Spazio Colore e Sottocampionatura</h2>
+        <p><strong>Da RGB a YCbCr</strong></p>
+        <p>La maggior parte delle immagini digitali nasce in formato RGB (Red, Green, Blue), dove ogni pixel è descritto da tre valori che indicano l'intensità di rosso, verde e blu. Tuttavia, l'occhio umano è molto più sensibile alle variazioni di luminosità (luma) che a quelle di colore (croma).</p>
+        <p>Il primo passo nella compressione JPEG è quindi convertire l'immagine dallo spazio colore RGB a uno spazio colore che separi la luminanza dalla crominanza, tipicamente YCbCr.</p>
+        
+        <img src="assets/images/conversione RGN YCbCr.png" alt="Diagramma conversione da RGB a YCbCr" class="immagine-contenuto">
+        
+        <p><strong>Y: Rappresenta la componente di luminanza (il "bianco e nero" dell'immagine).</strong><br>
+            <strong>Cb: Rappresenta la componente di crominanza blu (la differenza tra il blu e un segnale di riferimento).</strong><br>
+            <strong>Cr: Rappresenta la componente di crominanza rossa (la differenza tra il rosso e un segnale di riferimento).</strong></p>
+        <p>Una volta separata la luminanza dalla crominanza, si può applicare la sottocampionatura della croma. Dato che siamo meno sensibili ai dettagli di colore, possiamo permetterci di memorizzare meno informazioni sulla crominanza rispetto alla luminanza, risparmiando un bel po' di spazio. Per fare ciò, l'intera immagine viene suddivisa in "blocchetti" di pixel 2x2, per tutti e tre i valori Y, Cb e Cr.</p>
+        
+        <img src="assets/images/Blocchetti 2x2 YCbCr.png" alt="Illustrazione dei blocchetti 2x2 YCbCr" class="immagine-contenuto">
+        
+        <p><strong>Ecco i principali schemi di sottocampionatura:</strong></p>
+        <img src="assets/images/Sottocampionatura Della Crominanza 1.png" alt="Sottocampionatura Della Crominanza" class="immagine-contenuto">
+        
+        <p><strong>(4:4:4):</strong> Nessuna sottocampionatura. Per ogni 4 pixel di luminanza (Y), ci sono 4 campioni di Cb e 4 campioni di Cr. Massima qualità del colore, ma minor compressione. Immagina un blocco di 2x2 pixel: tutti e 4 i pixel hanno i loro valori Y, Cb e Cr distinti.</p>
+        <p><strong>(4:2:2):</strong> Per ogni 4 pixel di luminanza in una riga (ad esempio, un blocco 2x2), ci sono 2 campioni di Cb e 2 campioni di Cr. Questi campioni di croma vengono condivisi orizzontalmente. In pratica, in un blocco 2x2, avremo 4 valori Y, ma solo 2 valori Cb e 2 valori Cr (uno valore medio per ogni coppia di pixel adiacenti orizzontalmente). La risoluzione verticale del colore è piena, quella orizzontale è dimezzata.</p>
+        <p><strong>(4:2:0):</strong> Questo è lo schema più comune per JPEG e video. Per ogni blocco di 4 pixel di luminanza (un quadrato 2x2), c'è solo 1 campione di Cb e 1 campione di Cr. Questi due valori di croma vengono condivisi tra tutti e quattro i pixel del blocco 2x2. In pratica, la risoluzione del colore, sia orizzontale che verticale (il valore medio tra i 4 precedenti), viene dimezzata rispetto alla luminanza. Questo schema offre la compressione maggiore perché scarta più informazioni di colore, sfruttando al massimo la minore sensibilità dell'occhio a questi dettagli.</p>
+
+        <button class="collapsible-button optional-button">Perché 4:2:0 e non 4:1:1? (facoltativo per la comprensione del JPEG)</button>
+        <div class="collapsible-content">
+            <p>La nomenclatura della sottocampionatura della croma, come "4:2:0", può sembrare un po' controintuitiva all'inizio.</p>
+            <p>Chiariamo subito che contrariamente a come si potrebbe pensare i 3 numeri non indicano i valori relativi a Y, Cb e Cr in un blocco 2x2 come nell'esempio. Si chiama notazione "J:a:b" (dove nel nostro caso J=4, a=2, b=0) non si riferisce direttamente al numero di campioni Y, Cb e Cr per un singolo blocco 2x2 in modo isolato, ma descrive piuttosto come i campioni di croma (Cb e Cr) sono campionati rispetto ai campioni di luminanza (Y) in una regione di riferimento più ampia, che è larga J pixel (nel nostro caso 4) e alta 2 pixel.</p>
+            <p>Analizziamo i numeri:</p>
+            <p>Il primo numero (J = 4): Si riferisce al numero di campioni di luminanza (Y) in una riga orizzontale che prendiamo come riferimento. Quindi, stiamo considerando una "finestra" o una regione larga 4 pixel.</p>
+            <p>Il secondo numero (a = 2): Indica quanti campioni di croma (sia Cb che Cr) ci sono nella prima riga di questa regione di 4 pixel di luminanza. Quindi, "2" significa che per 4 campioni Y della prima riga, ci sono 2 campioni Cb e 2 campioni Cr. Questi campioni di croma sono campionati a metà della risoluzione orizzontale della luminanza.</p>
+            <p>Il terzo numero (b = 0): Indica quanti campioni di croma (sia Cb che Cr) ci sono nella seconda riga della regione di 4 pixel di luminanza, relativamente alla prima riga.</p>
+            <p>Immagina la notazione 4:2:0 come una ricetta veloce per risparmiare dati sul colore:</p>
+            <p>Il "4": Si riferisce alla luminanza (Y), la parte di bianco e nero. Diciamo che per ogni 4 pixel di luminanza in una riga, guardiamo cosa fare con il colore.</p>
+            <p>Il "2": Per quei 4 pixel di luminanza nella riga, prendiamo solo 2 campioni di colore (Cb e Cr). Quindi, dimezziamo i dettagli di colore orizzontalmente.</p>
+            <p>Lo "0": Per la riga di pixel di luminanza immediatamente sotto la prima, non prendiamo NESSUN NUOVO campione di colore. Semplicemente, riutilizziamo i 2 campioni di colore presi per la riga sopra. Questo dimezza i dettagli di colore verticalmente.</p>
+            <p>Cosa significa per un quadratino 2x2 di pixel?<br>
+            Visto che dimezziamo i dettagli di colore sia in orizzontale (il "2") sia in verticale (lo "0"), un blocchetto di 4 pixel di luminanza (un quadrato 2x2) finirà per condividere 1 solo campione di Cb e 1 solo campione di Cr.</p>
+            <p><strong>Perché non 4:1:1?</strong></p>
+            <p>Se fosse 4:1:1, significherebbe:</p>
+            <p>Per 4 pixel di luminanza in una riga, prendi 1 campione di colore (Cb e Cr) – quindi ancora meno dettagli di colore orizzontali rispetto a 4:2:0.<br>
+            Per la riga sotto, prendi un altro e nuovo singolo campione di colore.<br>
+            Lo "0" in 4:2:0 è cruciale perché dice "copia il colore dalla riga sopra", mentre un "1" (o un "2") al posto dello "0" direbbe "prendi nuovi campioni di colore per questa riga".</p>
+            <p>In breve: 4:2:0 significa che il colore è campionato con metà risoluzione orizzontale rispetto alla luminanza, e la riga di campioni di colore sottostante è identica a quella sopra. Questo porta a 1 campione di Cb e 1 di Cr per ogni blocco 2x2 di luminanza.</p>
+        </div>
+
+        <p><strong>La sottocampionatura è uno dei primi e più efficaci metodi per ridurre i dati, ed è il primo esempio di come JPEG sfrutti le caratteristiche della percezione visiva umana.</strong></p>
+
+        <h2>2. Trasformata Discreta del Coseno (DCT)</h2>
+        <p><strong>Ora inizia la magia vera e propria!</strong></p>
+        <p>L'immagine (o meglio, ogni suo canale Y, Cb, Cr separatamente) viene suddivisa in blocchi di 8x8 pixel. Su ciascuno di questi blocchi viene applicata la Trasformata Discreta del Coseno (DCT).</p>
+        <p>Cosa fa la DCT? In parole semplici, trasforma i valori dei pixel (che rappresentano l'intensità luminosa o cromatica nello spazio) in un insieme di coefficienti di frequenza, esprimibili con un valore che varia da -128 a 127.</p>
+        <p>Se visualizziamo questi coefficienti (64) come qualcosa di più concreto convertendo i valori in una scala di grigio dove -128 è nero e 127 è bianco, ognuno di questi coefficienti da origine a un pattern diverso. L'insieme di questi pattern è chiamato "le 64 immagini di base della DCT" queste immagini se sovrapposte fra loro (con diverse intensità) possono ricostruire qualsiasi porzione 8x8 di un immagine. </p>
+        <p>Immagina di utilizzare questi 64 pattern come dei livelli sovrapposti, modificando l'opacità (intensità del coefficiente) dei singoli pattern sovrapposti fra loro puoi ricostruire qualsiasi forma, sfumatura o composizione di pixel 8x8.</p>
+        <iframe scrolling="no" frameborder="0" height="500" width="100%" src="assets/sketches/dct/"></iframe>
+        <p>Il primo coefficiente in alto a sinistra del blocco trasformato 8x8 è chiamato coefficiente DC (Direct Current). Rappresenta la media dei valori dei 64 pixel originali, ovvero l'informazione di "bassa frequenza" o il colore/luminosità predominante del blocco.<br>
+        Gli altri 63 coefficienti sono chiamati coefficienti AC (Alternating Current). Rappresentano le informazioni di "alta frequenza", ovvero i dettagli più fini. Man mano che ci si allontana dal coefficiente DC (verso il basso e verso destra), i coefficienti AC rappresentano frequenze spaziali sempre più alte, che corrispondono a variazioni rapide e dettagli più minuziosi. Questi sono spesso poco importanti per la percezione complessiva dell'immagine e a seconda di quanto è intensiva la compressione, possono quindi essere rappresentate con meno precisione (arrotondando i valori) o addirittura scartati.</p>
+
+        <h2>3. Quantizzazione</h2>
+        <p><strong>La "Potatura" Intelligente dei Dettagli</strong></p>
+        <p>Qui avviene la vera e propria "perdita di informazione" in modo controllato. Dopo la DCT, abbiamo una matrice 8x8 di coefficienti di frequenza. La quantizzazione consiste nel dividere ciascuno di questi coefficienti per un valore intero specificato in una tabella di quantizzazione (anch'essa 8x8) e arrotondare il risultato all'intero più vicino.</p>
+        <p><strong>Coefficiente Quantizzato = (Coefficiente DCT / Valore Tabella Quantizzazione) arrotondato al numero intero più vicino.</strong></p>
+        <iframe scrolling="no" frameborder="0" height="500" width="100%" src="assets/sketches/quantization_visualization/"></iframe>
+        <p>La tabella di quantizzazione non è casuale. I valori in questa tabella sono generalmente più piccoli per le basse frequenze (in alto a sinistra, vicino al coefficiente DC) e più grandi per le alte frequenze (in basso a destra).</p>
+        <p><strong>Cosa significa questo?</strong> Significa che i coefficienti di bassa frequenza (più importanti per la percezione) vengono divisi per numeri piccoli, quindi la loro precisione viene alterata meno.</p>
+        <p>I coefficienti di alta frequenza (meno importanti e a cui l'occhio è meno sensibile) vengono divisi per numeri grandi. Questo fa sì che molti di essi diventino zero o valori molto piccoli, eliminando di fatto molti dettagli fini.<br>
+        È proprio qui che si decide il livello di compressione (e di qualità)! Tabelle di quantizzazione con valori più alti porteranno a una maggiore compressione (più zeri, valori più piccoli) ma anche a una maggiore perdita di qualità (più dettagli scartati). Al contrario, valori più bassi nella tabella preserveranno più dettagli ma comprimeranno meno. Esistono tabelle di quantizzazione standard, ma i software di codifica JPEG possono anche usarne di personalizzate. Spesso si usano tabelle diverse per la luminanza e la crominanza, dato che quest'ultima può essere compressa in modo più aggressivo.</p>
+        <p><strong>Il risultato della quantizzazione è una matrice 8x8 con molti zeri, specialmente nelle posizioni corrispondenti alle alte frequenze.</strong></p>
+
+        <h2>4. Codifica Entropica (lossless)</h2>
+        <p><strong>Comprimere Senza Perdere Nessuno dei Dati Rimanenti</strong></p>
+        <p>A questo punto, abbiamo una matrice di coefficienti quantizzati, ricca di zeri. Ora dobbiamo memorizzare questi dati nel modo più efficiente possibile, e lo facciamo con tecniche di codifica entropica (esprimere sequenze di numeri utilizzando meno cifre), che sono di tipo lossless (senza perdita, su questi dati già quantizzati). JPEG usa principalmente due tecniche in sequenza:</p>
+        <p><strong>Lettura a Zig-Zag:</strong> Prima di applicare la codifica vera e propria, i coefficienti quantizzati della matrice 8x8 vengono letti secondo un ordine a zig-zag. Si parte dal coefficiente DC (in alto a sinistra) e si prosegue diagonalmente, serpeggiando attraverso la matrice fino all'ultimo coefficiente (in basso a destra).</p>
+        <iframe scrolling="no" frameborder="0" height="500" width="100%" src="assets/sketches/zig_zag/"></iframe>
+        <p><strong>Perché a zig-zag?</strong> Questo ordinamento ha lo scopo di raggruppare insieme i coefficienti nulli (o molto piccoli), che grazie alla quantizzazione si trovano prevalentemente nelle alte frequenze (parte inferiore destra della matrice). Dopo la lettura a zig-zag, ci troveremo spesso con lunghe sequenze di zeri alla fine del vettore di coefficienti, il che è perfetto per la tecnica successiva.</p>
+        <p><strong>Codifica di Huffman</strong></p>
+        <p>Le cifre ricavate vengono "compresse" utilizzando la codifica di Huffman un sistema di codifica abbastanza complesso che assegna una stringa di 0 e 1 più o meno lunga in base alla maggior presenza di un certo numero rispetto agli altri (se una serie di numeri è presente più volte rispetto alle altre sarà associata a una stringa di 0 e 1 più breve così da risparmiare spazio).<br>(spiegazione più approfondita più avanti nel testo)</p>
+        <p><strong>Run-Length Encoding (RLE)</strong></p>
+        <p>La RLE è una tecnica semplice ed efficace per comprimere sequenze di dati ripetuti. Nel nostro caso, dopo la Codifica di Huffman, avremo molte sequenze di 0 e 1. La RLE codifica queste sequenze specificando quante volte un valore (in questo caso, 0 e 1) si ripete consecutivamente. Ad esempio, "sette zeri (7, 0)" può essere rappresentato in modo molto più compatto che scrivere "0, 0, 0, 0, 0, 0, 0".</p>
+        
+        <div> 
+            <p><strong>Sketches su Codifica Huffman, RLE e loro Unione:</strong></p>
+			<div class="sketch-controls">
+				<button onclick="loadInteractiveSketch('./assets/sketches/huffman_coding/index.html')">Huffman Coding</button>
+				<button onclick="loadInteractiveSketch('./assets/sketches/rle_coding/index.html')">RLE Coding</button>
+				<button onclick="loadInteractiveSketch('./assets/sketches/huffman_rle_coding/index.html')">Huffman + RLE Coding</button>
 			</div>
-		</section>
-
-		<!-- --------------------------------------------------------------------- -->
-
-		<section class="filetto">
-			<h4 class="titolo-sezione" id="conversione-spazio-colore"> Conversione dello spazio colore</h4>
-			<div class="contenuto-sezione">
-				<p>
-                    La conversione dello spazio colore è il primo passaggio nella compressione JPEG e ha lo scopo di preparare i dati dell'immagine 
-                    per i successivi stadi di compressione sfruttando le caratteristiche del sistema visivo umano. 
-                    La maggior parte delle immagini digitali è rappresentata nello spazio colore RGB (rosso, verde, blu). 
-                    Nella compressione JPEG, questo spazio viene convertito in spazio colore YCbCr.  
-                    La luminanza (Y) tratta le informazioni riguardanti l'intensità della luce nell'immagine sfruttando l'alta sensibilità dell'occhio umano 
-                    alle diverse variazioni di luminosità; la crominanza blu (Cb) e la crominanza rossa (Cr) indicano la differenza tra il colore rosso o blu e un valore di grigio. 
-                    Il vantaggio principale della conversione in YCbCr ai fini della compressione risiede nella separazione delle informazioni di luminosità da quelle di colore.
-				</p>
-				<img class="sketch-image" src="./assets/images/conversione RGN YCbCr.png" alt="Conversione RGB to YCbCr" />
+			<div id="interactive-sketch-display-area" style="margin-bottom: 15px; text-align: center;">
+				<iframe id="interactive-sketch-iframe" scrolling="no" frameborder="0" height="500" width="90%" style="display: none; border: 1px solid #ccc;" data-current-interactive-sketch="about:blank"></iframe>
 			</div>
-		</section>
+			<p>
 
-		<!-- --------------------------------------------------------------------- -->
+        </div>
 
-		<section class="filetto">
-			<h4 class="titolo-sezione" id="sottocampionamento-crominanza">Sottocampionamento CbCr</h4>
-			<div class="contenuto-sezione">
-				<p>
-					Ora ci ritroviamo con tre valori: Y, Cb e Cr per ogni pixel. 
-					Il prossimo passaggio prevede la suddivisione dell'immagine in blocchi 2 x 2. 
-					In questi vengono analizzati separatamente i tre componenti colore per poter attuare una semplificazione. 
-					Specifichiamo che la quantità di dati per la Luminanza non diminuisce mai dato che questi valori sono ciò che l'occhio umano riesce a percepire 
-					maggiormente di fatto vengono presi tutti i dati dei singoli pixel, mai semplificati o eliminati. 
-					Questo invece non accade per la Crominanza che invece viene percepita difficilmente e che quindi permette al sottocampionamento 
-					di ridurre notevolmente la quantità di dati da portare avanti. 
-				</p>
-				<img class="sketch-image" src="./assets/images/Blocchetti 2x2 YCbCr.png" alt="Blocchetti 2x2 YCbCr" />
-				<p>
-					Ci sono tre varianti del sottocampionamento della Crominanza: 4:4:4,  4:2:2, 4:2:0. 
-					Nel primo caso la riduzione di dati è nulla dato che viene campionato lo stesso numero di informazioni (12 valori RGB, 12 valori YCbCr), 
-					nel secondo caso viene fatta una media di valori divisi orizzontalmente ( 12 valori RGB, 8 valori YCbCr) infine 
-					l'ultima dei sotto campionamenti è quella più brutale in cui viene fatta una media dei quattro valori di Cb e Cr (12 valori RGB, 6 valori YCbCr). 
-				</p>
-				<img class="sketch-image" src="./assets/images/Sottocampionatura Della Crominanza 1.png" alt="Sottocampionatura Della Crominanza 1" />
-			</div>
-		</section>
+        <button class="collapsible-button optional-button">Approfondimento della Codifica di Huffman (facoltativo per la comprensione del JPEG)</button>
+        <div class="collapsible-content" style="background-color: #f0f0f0; border-color: #dddddd;">
+            <p>La codifica di Huffman assegna codici binari di lunghezza variabile ai simboli: i simboli più frequenti ricevono codici più corti, mentre quelli meno frequenti ricevono codici più lunghi. Questo porta a una rappresentazione media più corta dei dati. Per fare ciò, si costruisce un albero di Huffman basato sulla frequenza di apparizione dei vari simboli.<br>
+            Il risultato finale di questi passaggi è un flusso di bit compresso che costituisce il file JPEG.</p>
+            <iframe scrolling="no" frameborder="0" height="950" width="100%" src="assets/sketches/effetto_onda/"></iframe>
+        </div>
 
-		<!-- --------------------------------------------------------------------- -->
+        <h2>Il Ripristino dell'Immagine</h2>
+        <p><strong>Quando visualizziamo un file JPEG, avviene il processo inverso, la decompressione</strong></p>
+        <ul>
+            <li>Decodifica Entropica</li>
+            <li>La RLE viene "srotolata" per ricostruire le sequenze di 0 e 1.</li>
+            <li>Il flusso di bit viene letto e i codici di Huffman (o aritmetici) vengono decodificati.</li>
+            <li>Si ricostruisce così la matrice 8x8 dei coefficienti quantizzati per ogni blocco.</li>
+            <li>Dequantizzazione: Ogni coefficiente quantizzato viene moltiplicato per il corrispondente valore della tabella di quantizzazione usata durante la compressione.</li>
+            <li>Trasformata Discreta del Coseno Inversa (IDCT): Su ogni blocco 8x8 di coefficienti (ora dequantizzati) viene applicata la IDCT. Questa trasformazione riconverte i coefficienti dal dominio delle frequenze al dominio spaziale, riottenendo i valori dei pixel (o meglio, un'approssimazione di essi).</li>
+            <li>Ricostruzione e Conversione dello Spazio Colore: I blocchi 8x8 vengono ricombinati per formare i piani Y, Cb e Cr dell'immagine. Se era stata applicata la sottocampionatura della croma (es. 4:2:0), i canali Cb e Cr vengono sovracampionati (upsampled) per riportarli alla stessa risoluzione del canale Y. </li>
+            <li>Infine, l'immagine viene riconvertita dallo spazio colore YCbCr allo spazio colore RGB, in modo che possa essere visualizzata correttamente sullo schermo.</li>
+        </ul>
 
-		<section class="filetto">
-			<h4 class="titolo-sezione" id="dct">DCT</h4>
-			<div class="contenuto-sezione">
-				<p>
-					La dct e la quantizzazione attraversano ogni sezione dell'immagine trovando le aree ad alta frequenza, queste onde non vengono percepite 
-					dal nostro occhio eliminando dati non necessari. Prendiamo in esame cosa accade nella Luminanza, ricordando che questi passaggi vengono fatti 
-					anche per la Crominanza. L'intera immagine viene divisa in blocchi 8 x 8 (64 px). Inizialmente ognuno di questi pixel ha un valore compreso tra 0 e 255,
-				    dato non ottimale per la Dct quindi per far si che che questo processo sia ottimizzato viene sottratto 128 ad ognuno dei 64 pixel ottenendo 
-					così un nuovo range di valore che va da 127 a -128 in cui lo 0 è al centro ( 127 = bianco, -128 = nero ). Una volta ottimizzati i valori dei blocchi 
-					entrano in gioco le funzioni base della DCT( 64 pattern, creati da combinazioni di funzioni coseno verticali e orizzontali). Applicati ai 64 pixel, 
-					si ottiene una somma pesata ( ovvero viene indicato quanto di quel pattern è presente nel blocco originale). Questa somma pesata ci rivela 
-					i valori necessari per la quantizzazione; "DC" coefficiente che indica il valore medio dei 64 pixel e i restanti 63 chiamati "AC"  che rappresentano 
-					le variazioni/ frequenze rispetto al valore medio "DC" . Questi passaggi complessi servono a passare dal dominio spaziale al dominio delle frequenze 
-					sfruttando così la debolezza dell'occhio umano.
+        <h2>Conclusioni</h2>
+        <p><strong>Il Successo di una Compressione Intelligente</strong></p>
+        <p>La compressione JPEG è un piccolo capolavoro di ingegneria che bilancia in modo efficace la necessità di ridurre le dimensioni dei file con il desiderio di mantenere una buona qualità visiva aprofittando della nostra percezione visiva. </p>
+        <p><strong>I suoi punti di forza sono:</strong></p>
+        <ul>
+            <li>Alti rapporti di compressione: Specialmente per immagini fotografiche.</li>
+            <li>Qualità regolabile: L'utente può scegliere il livello di compressione, influenzando direttamente la qualità finale.</li>
+            <li>Sfruttamento della percezione visiva umana: Tecniche come la sottocampionatura della croma e la quantizzazione basata sulla sensibilità alle frequenze sono fondamentali per il suo successo.</li>
+        </ul>
+        <p><strong>Tuttavia, ha anche dei limiti:</strong></p>
+        <ul>
+            <li>Lossy: Come detto, c'è una perdita irreversibile di informazione. A livelli di compressione molto alti, possono comparire artefatti visivi, come blocchi squadrati (dovuti alla divisione in blocchi 8x8), "zanzare" attorno ai bordi netti (effetto Gibbs) o perdita di dettagli fini.</li>
+            <li>Non ideale per tutti i tipi di immagine: Per immagini con molti dettagli netti, linee sottili o testo (come disegni al tratto, screenshot o grafica vettoriale), JPEG può dare risultati scadenti. In questi casi, formati lossless come PNG sono preferibili.</li>
+        </ul>
+        <p>Nonostante i suoi anni, JPEG rimane uno standard incredibilmente diffuso e utile. La sua comprensione ci aiuta non solo a capire come funzionano le immagini che vediamo ogni giorno, ma anche ad apprezzare l'eleganza delle soluzioni ingegneristiche che combinano matematica, percezione e informatica.</p>
+        <p>Speriamo che questa ricerca accompagnata da immagini ed esempi interattivi abbia aiutato la tua comprensione della compressione JPEG!</p>
 
-				</p>
-				<iframe scrolling="no" frameborder="0" height="500" width="100%" src="./assets/sketches/dct/"></iframe>
-			</div>
-		</section>
+        <h2>Bibliografia</h2>
+        <ul class="bibliography-links">
+            <li><a href="https://www.youtube.com/watch?v=Kv1Hiv3ox8I" target="_blank">https://www.youtube.com/watch?v=Kv1Hiv3ox8I</a></li>
+            <li><a href="https://www.youtube.com/watch?v=AuFSAJtAlbM&t=164s" target="_blank">https://www.youtube.com/watch?v=AuFSAJtAlbM&t=164s</a></li>
+            <li><a href="https://github.com/OmarShehata/jpeg-sandbox" target="_blank">https://github.com/OmarShehata/jpeg-sandbox</a></li>
+            <li><a href="https://it.wikipedia.org/wiki/YCbCr" target="_blank">https://it.wikipedia.org/wiki/YCbCr</a></li>
+            <li><a href="https://www.di.univr.it/documenti/OccorrenzaIns/matdid/matdid044707.pdf" target="_blank">https://www.di.univr.it/documenti/OccorrenzaIns/matdid/matdid044707.pdf</a></li>
+            <li><a href="https://www.youtube.com/watch?v=_Eb4-bPHEl4&t=580s" target="_blank">https://www.youtube.com/watch?v=_Eb4-bPHEl4&t=580s</a></li>
+        </ul>
 
-		<!-- --------------------------------------------------------------------- -->
+        <footer>
+            <p class="footer-left">Daniel Fasulo - Alessandro Soli</p>
+            <p class="footer-right">ISIA U - 2025</p>
+        </footer>
 
-		<section class="filetto">
-			<h4 class="titolo-sezione" id="quantizzazione">Quantizzazione</h4>
-			<div class="contenuto-sezione">
-				<p>
-					Dopo la preparazione dei dati tramite la DCT si passa alla quantizzazione. 
-					Il blocco ricavato dal processo di DCT, viene diviso per la prima tabella di quantizzazione con i valori di luminanza che al suo interno 
-					ha i valori corrispondenti. Vedendo i risultati si può notare come la maggior parte di questi valori si sia annullato. 
-					Nel passaggio appena avvenuto vengono eliminati dati che il nostro occhio non riesce a percepire, perciò dopo la prima operazione è necessario 
-					utilizzare una seconda tabella di quantizzazione con i valori di crominanza per far sì che il numero degli zeri aumenti ancora.
-                    Queste operazioni permettono di ridurre considerevolmente la quantità di pixel con valore.
-				</p>
-				<iframe scrolling=no frameborder=0 height=500 src="./assets/sketches/quantization_visualization/"></iframe>
+    </div> 
+    <script>
+        function loadInteractiveSketch(newSketchPath) {
+            const iframe = document.getElementById('interactive-sketch-iframe');
+            if (iframe) {
+                const dataAttribute = 'data-current-interactive-sketch';
+                const currentlySetPath = iframe.getAttribute(dataAttribute);
 
-			</div>
-		</section>
+                if (currentlySetPath === newSketchPath && iframe.style.display !== 'none') {
+                    // Sketch is currently shown and it's the one for the clicked button: hide it.
+                    iframe.src = 'about:blank'; // Clear src to stop sketch execution
+                    iframe.setAttribute(dataAttribute, 'about:blank');
+                    iframe.style.display = 'none';
+                } else {
+                    // Either no sketch is shown, a different sketch is shown, or the clicked sketch was hidden: show it.
+                    iframe.src = newSketchPath;
+                    iframe.setAttribute(dataAttribute, newSketchPath);
+                    iframe.style.display = 'block';
+                }
+            }
+        }
 
-		<!-- --------------------------------------------------------------------- -->
+        var coll = document.getElementsByClassName("collapsible-button");
+        var i;
 
-		<section class="filetto">
-			<h4 class="titolo-sezione" id="rle-huffman">RLE Codice Huffman</h4>
-			<div class="contenuto-sezione">
-				<p>
-					La dct e la quantizzazione attraversano ogni sezione dell'immagine trovando le aree ad alta frequenza, queste onde non vengono percepite 
-					dal nostro occhio eliminando dati non necessari. Prendiamo in esame cosa accade nella Luminanza, ricordando che questi passaggi vengono fatti 
-					anche per la Crominanza. L'intera immagine viene divisa in blocchi 8 x 8 (64 px). Inizialmente ognuno di questi pixel ha un valore compreso tra 0 e 255,
-				    dato non ottimale per la Dct quindi per far si che che questo processo sia ottimizzato viene sottratto 128 ad ognuno dei 64 pixel ottenendo 
-					così un nuovo range di valore che va da 127 a -128 in cui lo 0 è al centro ( 127 = bianco, -128 = nero ). Una volta ottimizzati i valori dei blocchi 
-					entrano in gioco le funzioni base della DCT( 64 pattern, creati da combinazioni di funzioni coseno verticali e orizzontali). Applicati ai 64 pixel, 
-					si ottiene una somma pesata ( ovvero viene indicato quanto di quel pattern è presente nel blocco originale). Questa somma pesata ci rivela 
-					i valori necessari per la quantizzazione; "DC" coefficiente che indica il valore medio dei 64 pixel e i restanti 63 chiamati "AC"  che rappresentano 
-					le variazioni/ frequenze rispetto al valore medio "DC" . Questi passaggi complessi servono a passare dal dominio spaziale al dominio delle frequenze 
-					sfruttando così la debolezza dell'occhio umano.
-				</p>
-                <div id="sketch-huffman-rle-container">
-                    <iframe id="huffman-rle-iframe" scrolling="no" frameborder="0" height="600" width="100%" src="./assets/sketches/Onda_HUffman/" data-current-sketch="./assets/sketches/Onda_HUffman/" style="display: block;"></iframe>
-                </div>
-				<div class="sketch-controls">
-					<button onclick="showSketch('./assets/sketches/huffman_coding/index.html')">Huffman Coding</button>
-					<button onclick="showSketch('./assets/sketches/rle_coding/index.html')">RLE Coding</button>
-					<button onclick="showSketch('./assets/sketches/huffman_rle_coding/index.html')">Huffman + RLE Coding</button>
-				</div>
-			</div>
-		</section>
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
 
-		<!-- --------------------------------------------------------------------- -->
-
-		<section class="filetto">
-			<h4 class="titolo-sezione">Conclusioni</h4>
-			<div class="contenuto-sezione">
-				<p>
-					La dct e la quantizzazione attraversano ogni sezione dell'immagine trovando le aree ad alta frequenza, queste onde non vengono percepite 
-					dal nostro occhio eliminando dati non necessari. Prendiamo in esame cosa accade nella Luminanza, ricordando che questi passaggi vengono fatti 
-					anche per la Crominanza. L'intera immagine viene divisa in blocchi 8 x 8 (64 px). Inizialmente ognuno di questi pixel ha un valore compreso tra 0 e 255,
-				    dato non ottimale per la Dct quindi per far si che che questo processo sia ottimizzato viene sottratto 128 ad ognuno dei 64 pixel ottenendo 
-					così un nuovo range di valore che va da 127 a -128 in cui lo 0 è al centro ( 127 = bianco, -128 = nero ). Una volta ottimizzati i valori dei blocchi 
-					entrano in gioco le funzioni base della DCT( 64 pattern, creati da combinazioni di funzioni coseno verticali e orizzontali). Applicati ai 64 pixel, 
-					si ottiene una somma pesata ( ovvero viene indicato quanto di quel pattern è presente nel blocco originale). Questa somma pesata ci rivela 
-					i valori necessari per la quantizzazione; "DC" coefficiente che indica il valore medio dei 64 pixel e i restanti 63 chiamati "AC"  che rappresentano 
-					le variazioni/ frequenze rispetto al valore medio "DC" . Questi passaggi complessi servono a passare dal dominio spaziale al dominio delle frequenze 
-					sfruttando così la debolezza dell'occhio umano.
-				</p>
-
-			</div>
-		</section>
-
-		<!-- --------------------------------------------------------------------- -->
-
-		<section class="bibliografia-container">
-			<details>
-				<summary>Bibliografia</summary>
-				<div class="bibliografia-contenuto">
-					<ul>
-						<li>
-							<a target="_blank" href="https://en.wikipedia.org/wiki/Trigonometric_functions">Wikipedia (en): Trigonometric functions</a>
-						</li>
-						<li>Maecenas quis ante sit amet neque cursus hendrerit ac sit amet nisl</li>
-						<li>In cursus aliquam odio eu eleifend</li>
-						<li>Ut sed auctor magna</li>
-						<li>In hac habitasse platea dictumst</li>
-						<li>Aliquam aliquam nisl mi</li>
-						<li>Phasellus et orci elit</li>
-						<li>Maecenas vehicula elit et lacus accumsan consequat</li>
-						<li>Nam consectetur lacus ante</li>
-						<li>Vestibulum et massa dolor</li>
-						<li>Aenean condimentum blandit eros non dapibus</li>
-						<li>Maecenas quam nulla, porta eu nibh in, cursus iaculis mauris</li>
-						<li>Phasellus sit amet nulla eu tellus dictum cursus</li>
-						<li>Sed aliquet, ipsum sit amet tempus semper, augue velit consequat mi, et gravida sem purus a quam</li>
-					</ul>
-				</div>
-			</details>
-		</section>
-	</main>
-
-	<!-- --------------------------------------------------------------------- -->
-    <div id="sketch-container"></div>
-
-	<footer>
-		<div class="footer-contenuto-sinistra">
-			<p>La compressione jpg<br>
-			Progetto di Daniel Fasulo e Alessandro Soli</p>
-		</div>
-		<div class="footer-contenuto-destra">
-			<p>ISIA U <br>
-			A.A 24/25</p>
-		</div>
-	</footer>
-    <script src="sketch.js"></script>
-	<script>
-		function showSketch(newSketchPath) {
-			const iframe = document.getElementById('huffman-rle-iframe');
-			if (iframe) {
-				const currentlySetPath = iframe.getAttribute('data-current-sketch');
-
-				if (currentlySetPath === newSketchPath && iframe.style.display !== 'none') {
-					// Sketch is currently shown and it's the one for the clicked button: hide it.
-					iframe.src = 'about:blank'; // Clear src to stop sketch execution
-					iframe.setAttribute('data-current-sketch', 'about:blank');
-					iframe.style.display = 'none';
-				} else {
-					// Either no sketch is shown, a different sketch is shown, or the clicked sketch was hidden: show it.
-					iframe.src = newSketchPath;
-					iframe.setAttribute('data-current-sketch', newSketchPath);
-					iframe.style.display = 'block';
-				}
-			}
-		}
-	</script>
 </body>
 </html>
