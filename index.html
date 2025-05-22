@@ -335,6 +335,59 @@
         <p>Nonostante i suoi anni, JPEG rimane uno standard incredibilmente diffuso e utile. La sua comprensione ci aiuta non solo a capire come funzionano le immagini che vediamo ogni giorno, ma anche ad apprezzare l'eleganza delle soluzioni ingegneristiche che combinano matematica, percezione e informatica.</p>
         <p>Speriamo che questa ricerca accompagnata da immagini ed esempi interattivi abbia aiutato la tua comprensione della compressione JPEG!</p>
 
+        <button class="collapsible-button optional-button" style="color: red;">Formule Matematiche</button>
+        <div class="collapsible-content">
+            <p>Se hai bisogno delle formule specifiche utilizzate nei singoli passaggi le trovi qui sotto!</p>
+            <p>Noi abbiamo evitato di inserirle nell'articolo per privilegiare una comprensione più intuitiva.</p>
+            
+            <p><strong style="color: black; font-size: 1.2em;">1. Trasformazione dello Spazio Colore (da RGB a YCbCr - Esempio comune):</strong></p>
+            <p>Le formule esatte possono variare leggermente a seconda dello standard (es. BT.601, BT.709), ma un set comune per la conversione da RGB (valori da 0 a 255) a YCbCr è:</p>
+            <p>Y = 0.299⋅R + 0.587⋅G + 0.114⋅B</p>
+            <p>Cb = −0.168736⋅R − 0.331264⋅G + 0.5⋅B + 128</p>
+            <p>Cr = 0.5⋅R − 0.418688⋅G − 0.081312⋅B + 128</p>
+
+            <p><strong style="color: black; font-size: 1.2em;">2. Trasformata Coseno Discreta (DCT) Bidimensionale (Forward DCT):</strong></p>
+            <p>Per un blocco di input f(x,y) di N x N pixel (in JPEG, N=8), il coefficiente DCT F(u,v) è calcolato come:</p>
+            <p>F(u,v) = (1/2N) · C(u)C(v)∑<sub>x=0</sub><sup>N−1</sup> ∑<sub>y=0</sub><sup>N−1</sup> f(x,y)cos[(π(2x+1)u)/2N]cos[(π(2y+1)v)/2N]</p>
+            <p>dove:</p>
+            <ul>
+                <li>x,y sono le coordinate spaziali nel blocco (da 0 a N-1).</li>
+                <li>u,v sono le coordinate di frequenza nel blocco dei coefficienti DCT (da 0 a N-1).</li>
+                <li>C(k) = 1/√2 se k=0</li>
+                <li>C(k) = 1 se k>0</li>
+            </ul>
+            
+            <p>Nota: A volte il fattore di normalizzazione (1/2N)·C(u)C(v) viene espresso come (2/N)·α(u)α(v) dove α(k) = 1/√2 se k=0 e α(k) = 1 se k>0, e il fattore (2/N) può essere distribuito diversamente tra la DCT e la IDCT o nelle tabelle di quantizzazione.</p>
+            
+            <p>Una forma più comune per la DCT-II usata in JPEG per un blocco N x N (N=8) è:</p>
+            <p>F(u,v) = (1/4)·α(u)α(v)∑<sub>x=0</sub><sup>7</sup> ∑<sub>y=0</sub><sup>7</sup> f(x,y)cos[(π(2x+1)u)/16]cos[(π(2y+1)v)/16]</p>
+            <p>con i fattori di scala α(k):</p>
+            <ul>
+                <li>α(k) = 1/√2 se k=0</li>
+                <li>α(k) = 1 se k>0</li>
+            </ul>
+            <p>Il fattore (1/4) è un esempio di normalizzazione; la definizione esatta può variare, ma l'importante è che la DCT e la IDCT inverse siano coerenti.</p>
+
+            <p><strong style="color: black; font-size: 1.2em;">3. Quantizzazione:</strong></p>
+            <p>Sia F(u,v) il coefficiente DCT calcolato e Q(u,v) il valore corrispondente nella tabella di quantizzazione. Il coefficiente quantizzato F<sub>Q</sub>(u,v) è:</p>
+            <p>F<sub>Q</sub>(u,v) = round(F(u,v)/Q(u,v))</p>
+            <p>dove "round" indica l'arrotondamento all'intero più vicino.</p>
+
+            <p><strong style="color: black; font-size: 1.2em;">4. De-Quantizzazione (usata in decompressione):</strong></p>
+            <p>Per ricostruire il coefficiente DCT (approssimato) durante la decompressione, F′(u,v):</p>
+            <p>F′(u,v) = F<sub>Q</sub>(u,v) · Q(u,v)</p>
+
+            <p><strong style="color: black; font-size: 1.2em;">5. DCT Inversa (IDCT - usata in decompressione):</strong></p>
+            <p>Per ricostruire il blocco di pixel f(x,y) dai coefficienti DCT de-quantizzati F′(u,v):</p>
+            <p>f(x,y) = (1/4) · ∑<sub>u=0</sub><sup>7</sup> ∑<sub>v=0</sub><sup>7</sup> α(u)α(v)F′(u,v)cos[(π(2x+1)u)/16]cos[(π(2y+1)v)/16]</p>
+            <p>con gli stessi fattori α(k) della DCT.</p>
+
+            <p><strong style="color: black; font-size: 1.2em;">6. Codifica Differenziale per il Coefficiente DC (DPCM):</strong></p>
+            <p>Se DC<sub>i</sub> è il coefficiente DC del blocco corrente e DC<sub>i−1</sub> è il coefficiente DC del blocco precedente (già quantizzato e codificato):</p>
+            <p>Diff<sub>i</sub> = DC<sub>i</sub> − DC<sub>i−1</sub></p>
+            <p>È il valore Diff<sub>i</sub> che viene poi ulteriormente codificato.</p>
+        </div>
+
         <h2>Bibliografia</h2>
         <ul class="bibliography-links">
             <li><a href="https://www.youtube.com/watch?v=Kv1Hiv3ox8I" target="_blank">https://www.youtube.com/watch?v=Kv1Hiv3ox8I</a></li>
