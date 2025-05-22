@@ -85,13 +85,22 @@ function draw() {
 
   text("Codici Huffman:", 20, height * 0.25);
   let sortedDigits = Object.keys(huffmanCodes).sort();
+  let huffmanCodesTextY = height * 0.25 + 20;
+  let lineHeight = 20;
   for (let i = 0; i < sortedDigits.length; i++) {
     let digit = sortedDigits[i];
-    text(`${digit} → ${huffmanCodes[digit]}`, 40, height * 0.25 + 20 + i * 20);
+    text(`${digit} → ${huffmanCodes[digit]}`, 40, huffmanCodesTextY + i * lineHeight);
   }
 
-  text("Output codificato:", 20, height * 0.8);
-  drawScrollableText(encoded, 20, height * 0.8 + 20, width - 40, height * 0.2);
+  let outputLabelY = height * 0.85;
+  text("Output codificato:", 20, outputLabelY);
+
+  let outputTextAreaStartY = outputLabelY + lineHeight;
+  let bottomMargin = 20;
+  let availableHeightForOutputText = height - outputTextAreaStartY - bottomMargin;
+  let outputTextAreaHeight = max(lineHeight, availableHeightForOutputText);
+
+  drawScrollableText(encoded, 20, outputTextAreaStartY, width - 40, outputTextAreaHeight);
 }
 
 function windowResized() {
