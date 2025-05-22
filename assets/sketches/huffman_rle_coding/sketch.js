@@ -59,30 +59,33 @@ function processInput() {
       }
   }
 
+  // Generiamo due versioni dell'output Huffman: una per la visualizzazione e una per l'elaborazione RLE
   huffmanEncoded = '';
+  let huffmanEncodedForProcessing = '';
   for (let char of inputText) {
     if (huffmanCodes[char] !== undefined) {
-        huffmanEncoded += huffmanCodes[char] + ' ';
+        huffmanEncodedForProcessing += huffmanCodes[char]; // Senza spazi per l'elaborazione RLE
+        huffmanEncoded += huffmanCodes[char] + ' '; // Con spazi per la visualizzazione
     }
   }
 
   // --- RLE on Huffman Encoded string ---
   let rleResultArray = [];
   rleEncoded = '';
-  if (huffmanEncoded.length > 0) {
-    let currentSymbol = huffmanEncoded[0];
+  if (huffmanEncodedForProcessing.length > 0) {
+    let currentSymbol = huffmanEncodedForProcessing[0];
     let count = 1;
-    for (let i = 1; i < huffmanEncoded.length; i++) {
-      if (huffmanEncoded[i] === currentSymbol) {
+    for (let i = 1; i < huffmanEncodedForProcessing.length; i++) {
+      if (huffmanEncodedForProcessing[i] === currentSymbol) {
         count++;
       } else {
-        // Formato invertito: prima conteggio poi simbolo (es: 30 per "000")
-        rleResultArray.push(`${count}${currentSymbol}`);
-        currentSymbol = huffmanEncoded[i];
+        // Formato corretto: prima conteggio poi simbolo con parentesi
+        rleResultArray.push(`(${count},${currentSymbol})`);
+        currentSymbol = huffmanEncodedForProcessing[i];
         count = 1;
       }
     }
-    rleResultArray.push(`${count}${currentSymbol}`);
+    rleResultArray.push(`(${count},${currentSymbol})`);
 
     if (rleResultArray.length > 0) {
       // Aggiungi esplicitamente uno spazio dopo ogni coppia di valori
