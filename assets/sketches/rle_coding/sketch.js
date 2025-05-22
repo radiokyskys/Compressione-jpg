@@ -37,14 +37,14 @@ function processInput() {
     if (inputText[i] === current) {
       count++;
     } else {
-      resultForFormattedEncoded.push(`(${current},${count}), `);
-      compactRLEString += `${current}${count} `;
+      resultForFormattedEncoded.push(`(${count},${current}), `);
+      compactRLEString += `${count}${current} `;
       current = inputText[i];
       count = 1;
     }
   }
-  resultForFormattedEncoded.push(`(${current},${count}), `);
-  compactRLEString += `${current}${count} `;
+  resultForFormattedEncoded.push(`(${count},${current}), `);
+  compactRLEString += `${count}${current} `;
   
   encoded = resultForFormattedEncoded.join('');
   if (encoded.length > 2) {
