@@ -62,7 +62,7 @@ function processInput() {
   huffmanEncoded = '';
   for (let char of inputText) {
     if (huffmanCodes[char] !== undefined) {
-        huffmanEncoded += huffmanCodes[char];
+        huffmanEncoded += huffmanCodes[char] + ' ';
     }
   }
 
@@ -76,16 +76,16 @@ function processInput() {
       if (huffmanEncoded[i] === currentSymbol) {
         count++;
       } else {
-        // Modifica Richiesta 2: Formato "SimboloConteggio" senza virgola
-        rleResultArray.push(`${currentSymbol}${count}`);
+        // Formato invertito: prima conteggio poi simbolo (es: 30 per "000")
+        rleResultArray.push(`${count}${currentSymbol}`);
         currentSymbol = huffmanEncoded[i];
         count = 1;
       }
     }
-    rleResultArray.push(`${currentSymbol}${count}`);
+    rleResultArray.push(`${count}${currentSymbol}`);
 
     if (rleResultArray.length > 0) {
-      // Modifica Richiesta 2: Unisci con " " dopo ogni coppia "nn"
+      // Aggiungi esplicitamente uno spazio dopo ogni coppia di valori
       rleEncoded = rleResultArray.map(pair => `${pair} `).join('');
     }
   }
