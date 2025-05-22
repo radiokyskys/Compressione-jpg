@@ -81,6 +81,8 @@ function setup() {
   updateLayout(); // Calcola le dimensioni iniziali
   createCanvas(canvasWidthGlobal, canvasHeightGlobal);
   
+  textFont('Inter, Helvetica, Arial, sans-serif');
+
   toggleButton = select('#toggleViewButton');
   if (toggleButton) {
     toggleButton.mousePressed(toggleDisplayMode);
