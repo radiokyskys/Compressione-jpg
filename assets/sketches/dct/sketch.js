@@ -187,6 +187,8 @@ function setup() {
     
     calculateLayoutCoordinates(); 
 
+    textFont('Inter, Helvetica, Arial, sans-serif');
+
     cnv.mouseMoved(updateHoverInfo);
     cnv.mousePressed(handleMousePressed);
     cnv.mouseOut(() => { 
