@@ -318,7 +318,7 @@ function updateHoverInfo() {
     hoveredBasisU = -1; 
     hoveredBasisV = -1; 
     
-    let gridContentActualStartY = padding + labelHeight; 
+    let gridContentActualStartY = padding + labelHeight;
 
     if (typeof basisGridStartX_Global === 'undefined' || typeof basisGridActualContentWidth === 'undefined' || typeof basisGridActualContentHeight === 'undefined') {
         if (hoverInfoDiv) hoverInfoDiv.hide();
@@ -365,7 +365,7 @@ function updateHoverInfo() {
 }
 
 function draw() {
-    // background(240, 244, 248); 
+    background(240); // Uncommented and changed to light gray for consistency
 
     let commonLabelY = padding + labelHeight / 2 -1; 
     let commonBlocksStartY = padding + labelHeight;  
