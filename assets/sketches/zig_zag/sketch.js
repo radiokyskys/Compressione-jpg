@@ -195,12 +195,8 @@ const sketchRLE = (p) => {
             let entry = rleValues[i];
             let txt = "";
             if (entry.type === 'value') {
-                // Display all values with their count if count > 1
-                if (entry.count > 1) {
-                    txt = `(${entry.count},${entry.value}), `;
-                } else {
-                    txt = `${entry.value}, `;
-                }
+                // Display all values with their count (sempre nel formato count,value)
+                txt = `(${entry.count},${entry.value}), `;
             } else if (entry.type === 'EOB') {
                 txt = "EOB (I rimanenti sono 0)";
             }
