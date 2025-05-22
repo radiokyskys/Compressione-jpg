@@ -38,13 +38,13 @@ function processInput() {
       count++;
     } else {
       resultForFormattedEncoded.push(`(${current},${count}), `);
-      compactRLEString += `${current}${count}`;
+      compactRLEString += `${current}${count} `;
       current = inputText[i];
       count = 1;
     }
   }
   resultForFormattedEncoded.push(`(${current},${count}), `);
-  compactRLEString += `${current}${count}`;
+  compactRLEString += `${current}${count} `;
   
   encoded = resultForFormattedEncoded.join('');
   if (encoded.length > 2) {
@@ -137,7 +137,7 @@ function draw() {
   currentY += shortGapBetweenSections;
 
   // --- Sezione 2: Output RLE (formato | n,n |) ---
-  text("Output RLE (formato | n,n | per semplificarne la comprensione):", xPosition, currentY + labelBaselineOffset);
+  text("Output RLE formato '( n, n )' (per semplificarne la comprensione):", xPosition, currentY + labelBaselineOffset);
   drawScrollableText(encoded, xPosition, currentY + reservedHeightForLabelArea, contentWidth, textAreaCalculatedHeight, scrollTextLineHeight);
   currentY += reservedHeightForLabelArea + textAreaCalculatedHeight;
 
