@@ -16,7 +16,7 @@ function setup() {
   inputField.parent('controls-container');
   inputField.input(processInput);
 
-  textFont('Futura', 'monospace');
+  textFont('Inter, Helvetica, Arial, sans-serif');
   textSize(16);
 }
 
